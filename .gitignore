@@ -1,0 +1,10 @@
+# VS Code
+.vscode
+
+# Python
+*__pycache__
+__init__.py
+env
+
+# Misc.
+.DS_Store
