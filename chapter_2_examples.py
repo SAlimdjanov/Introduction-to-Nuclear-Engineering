@@ -14,10 +14,8 @@ from helpers.answer_writer import AnswerWriter
 class Chapter2Examples:
     """Solutions of Chapter 2 example problems"""
 
+    type_and_chapter = ("Example", 2)
     formulae = AtomicAndNuclearPhysics()
-
-    def __init__(self) -> None:
-        self.type_and_chapter = ("Example", 2)
 
     def example_2_1(self) -> Tuple[float, str, int]:
         """A glass of water is known to contain 6.6 * 10^24 atoms of hydrogen. How
