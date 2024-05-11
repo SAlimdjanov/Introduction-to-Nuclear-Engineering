@@ -31,26 +31,16 @@ constants = {
 }
 
 abundances = {  # atom percent, a/o
+    "1H": 99.986,
     "2H": 0.015,
     "16O": 99.759,
     "17O": 0.037,
     "18O": 0.204,
 }
 
-atomic_weights = {  # Unitless
-    "16O": 15.99492,
-    "17O": 16.99913,
-    "18O": 17.99916,
-    "Na": 22.98977,
-    "Cl": 35.45270,
-    "H": 1.00797,
-    "O": 15.9994,
-    "235U": 235.0439,
-    "238U": 238.0508,
-}
-
 neutral_atomic_masses = {  # amu
     "n": 1.008665,
+    "H": 1.00797,
     "1H": 1.007825,
     "2H": 2.014102,
     "3H": 3.016049,
@@ -58,6 +48,15 @@ neutral_atomic_masses = {  # amu
     "12C": 12.000000,
     "13C": 13.003354,
     "14C": 14.003242,
+    "O": 15.9994,
+    "16O": 15.99492,
+    "17O": 16.99913,
+    "18O": 17.99916,
+    "Na": 22.98977,
+    "Cl": 35.45270,
+    "59Co": 58.93319,
+    "235U": 235.0439,
+    "238U": 238.0508,
 }
 
 # Alpha particle spectrum of 226Ra. Keys are alpha particle energies and values are the relative
