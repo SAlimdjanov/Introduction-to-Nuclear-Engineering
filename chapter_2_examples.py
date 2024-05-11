@@ -5,7 +5,7 @@ chapter_2_examples.py
 
 from math import exp, log
 from typing import List, Tuple
-from helpers.data import constants, abundances, neutral_atomic_masses
+from helpers.data import constants, abundances, atomic_weights
 from helpers.conversions import conversion_factors, convert_temperature
 from helpers.chapter_formulae.chapter_2 import AtomicAndNuclearPhysics
 from helpers.answer_writer import AnswerWriter
@@ -27,11 +27,7 @@ class Chapter2Examples:
     def example_2_2(self) -> Tuple[float, str, int]:
         """Calculate the atomic weight of naturally occuring oxygen"""
         gamma = [abundances["16O"], abundances["17O"], abundances["18O"]]
-        m = [
-            neutral_atomic_masses["16O"],
-            neutral_atomic_masses["17O"],
-            neutral_atomic_masses["18O"],
-        ]
+        m = [atomic_weights["16O"], atomic_weights["17O"], atomic_weights["18O"]]
         return self.formulae.average_atomic_weight(gamma, m), "", 6
 
     def example_2_3(self) -> Tuple[float, str, int]:
@@ -82,10 +78,10 @@ class Chapter2Examples:
         # Add 1 since the deutrons are have energy of 1 MeV
         q = (
             self.formulae.q_value_atomic_masses(
-                neutral_atomic_masses["3H"],
-                neutral_atomic_masses["2H"],
-                neutral_atomic_masses["4He"],
-                neutral_atomic_masses["n"],
+                atomic_weights["3H"],
+                atomic_weights["2H"],
+                atomic_weights["4He"],
+                atomic_weights["n"],
             )
             + 1
         )
@@ -94,7 +90,7 @@ class Chapter2Examples:
     def example_2_9(self) -> Tuple[float, str, int]:
         """Calculate the binding energy of the last neutron in 13C."""
         # The residual nucleus is 12C, therefore:
-        m_a_1, m_a = neutral_atomic_masses["12C"], neutral_atomic_masses["13C"]
+        m_a_1, m_a = atomic_weights["12C"], atomic_weights["13C"]
         e_s = self.formulae.separation_energy(m_a_1, m_a)
         return e_s, "MeV", 3
 
@@ -118,14 +114,14 @@ class Chapter2Examples:
 
     def example_2_12(self) -> Tuple[float, str, int]:
         """The density of sodium is 0.97 g/cm^3. Calculate its atom density"""
-        rho, m = 0.97, neutral_atomic_masses["Na"]
+        rho, m = 0.97, atomic_weights["Na"]
         n = self.formulae.atom_density(rho, m)
         return n, "atoms/cm^-3", 3
 
     def example_2_13(self) -> str:
         """The density of a NaCl crystal is 2.17 g/cm^3. Compute the atom densities of Na and Cl."""
         # Since there is one Na atom and one Cl atom in a pseudo molecule, add the weights:
-        m = neutral_atomic_masses["Na"] + neutral_atomic_masses["Cl"]
+        m = atomic_weights["Na"] + atomic_weights["Cl"]
         rho = 2.17
         n = self.formulae.atom_density(rho, m)
         return f"{n:.3g} atoms/cm^3 for both since there is one atom of each per pseudomolecule"
@@ -136,7 +132,7 @@ class Chapter2Examples:
         (b) the atom densities of hydrogen and oxygen
         (c) the atom density of 2H"""
         # a)
-        m = 2 * neutral_atomic_masses["H"] + neutral_atomic_masses["O"]
+        m = 2 * atomic_weights["H"] + atomic_weights["O"]
         rho = 1
         n_h2o = self.formulae.atom_density(rho, m)
         # b) Multiply result of part a) by 2 for hydrogen, oxygen stays the same.
@@ -157,7 +153,7 @@ class Chapter2Examples:
         (a) How much 235U is in the reactor?
         (b) What are the atom densities of 235U and 238U in the rods?"""
         m_total, rho = 1500, 19.1
-        m_235u, m_238u = neutral_atomic_masses["235U"], neutral_atomic_masses["238U"]
+        m_235u, m_238u = atomic_weights["235U"], atomic_weights["238U"]
         # a) Enrichment to 20% w/o means 20% of the uranium in the reactor is 235U
         wp_235u, wp_238u = 20, 80
         mass_235u = 0.2 * m_total
@@ -175,11 +171,11 @@ class Chapter2Examples:
         the 235U in the fuel?"""
         rho = 10.5
         wp_235u, wp_238u = 30, 70
-        m_235u, m_238u = neutral_atomic_masses["235U"], neutral_atomic_masses["238U"]
+        m_235u, m_238u = atomic_weights["235U"], atomic_weights["238U"]
         m_u = self.formulae.atom_density_weight_percent(
             [wp_235u, wp_238u], [m_235u, m_238u]
         )
-        m_o = neutral_atomic_masses["O"]
+        m_o = atomic_weights["O"]
         wp_u = self.formulae.weight_percent(m_u, 1, m_o, 2)
         rho_avg_u = wp_u * rho / 100
         rho_235u = wp_235u * rho_avg_u / 100

@@ -6,7 +6,7 @@ data.py
 constants = {
     "amu (g)": 1.66054e-24,
     "amu (MeV)": 931.494,
-    "N_A (1/(g-mole))": 0.6022137e24,
+    "N_A (1/(g-mol))": 0.6022137e24,  # Can also be atoms/mol
     "k_B (J/K)": 1.38066e-23,
     "lambda_C (eV/K)": 8.61707e-5,
     "lambda_C (cm)": 2.42631e-10,
@@ -33,12 +33,16 @@ constants = {
 abundances = {  # atom percent, a/o
     "1H": 99.986,
     "2H": 0.015,
+    "12C": 100.0,
     "16O": 99.759,
     "17O": 0.037,
     "18O": 0.204,
+    "234U": 0.0057,
+    "235U": 0.72,
+    "238U": 99.27,
 }
 
-neutral_atomic_masses = {  # amu
+atomic_weights = {  # amu
     "n": 1.008665,
     "H": 1.00797,
     "1H": 1.007825,
@@ -55,6 +59,7 @@ neutral_atomic_masses = {  # amu
     "Na": 22.98977,
     "Cl": 35.45270,
     "59Co": 58.93319,
+    "234U": 234.0409,
     "235U": 235.0439,
     "238U": 238.0508,
 }

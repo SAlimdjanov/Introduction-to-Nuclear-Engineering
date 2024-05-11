@@ -8,7 +8,7 @@ Method q_value_atomic_masses: Change input args to lists of reactants and produc
 
 from math import sqrt, exp, log, pi
 from typing import List
-from ..data import constants, neutral_atomic_masses
+from ..data import constants, atomic_weights
 from ..conversions import conversion_factors
 
 
@@ -176,7 +176,7 @@ class AtomicAndNuclearPhysics:
 
     def mass_defect(self, z: int, n: int, m: int) -> float:
         """Computes the mass defect of a nucleus"""
-        m_h, m_n = neutral_atomic_masses["1H"], neutral_atomic_masses["n"]
+        m_h, m_n = atomic_weights["1H"], atomic_weights["n"]
         return z * m_h + n * m_n - m
 
     def q_value_binding(
@@ -188,7 +188,7 @@ class AtomicAndNuclearPhysics:
     def separation_energy(self, m_a_1: float, m_a: float) -> float:
         """Calculates the separation energy of the last neutron in nucleus ^{A}Z with the mass of
         the residual nucleus ^{A-1}Z in MeV"""
-        m_n = neutral_atomic_masses["n"]
+        m_n = atomic_weights["n"]
         return (m_n + m_a_1 - m_a) * conversion_factors["MeV/amu"]
 
     def mass_equation(self, n: int, a: int, z: int) -> float:
@@ -241,13 +241,13 @@ class AtomicAndNuclearPhysics:
     def atom_density(self, rho: float, m: float) -> float:
         """Returns the atom density of an element given its physical density and gram atomic
         weight"""
-        n_a = constants["N_A (1/(g-mole))"]
+        n_a = constants["N_A (1/(g-mol))"]
         return rho * n_a / m
 
     def atom_density_isotope(self, gamma: float, rho: float, m: float) -> float:
         """Calculates the atom density of an isotope given its abundance, physical density and
         atomic weight"""
-        n_a = constants["N_A (1/(g-mole))"]
+        n_a = constants["N_A (1/(g-mol))"]
         return gamma * rho * n_a / (m * 100)
 
     def average_density_component(self, w: float, rho: float) -> float:
@@ -258,7 +258,7 @@ class AtomicAndNuclearPhysics:
     def atom_density_component(self, w: float, rho: float, m: float) -> float:
         """Calculates the atom density of a component given its weight percent, physical
         density and atomic weight"""
-        n_a = constants["N_A (1/(g-mole))"]
+        n_a = constants["N_A (1/(g-mol))"]
         return w * rho * n_a / (m * 100)
 
     def weight_percent(self, x: float, m: int, y: float, n: int) -> float:
