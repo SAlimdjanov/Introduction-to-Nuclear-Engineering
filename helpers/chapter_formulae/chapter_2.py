@@ -18,8 +18,7 @@ class AtomicAndNuclearPhysics:
     def average_atomic_weight(self, gamma: List[float], m: List[float]) -> float:
         """Computes the average atomic weight of a mixture of isotopes, denoted by M. Requires lists
         of abundances and atomic masses of each isotope in the correct order. len(gamma) must be
-        equal to len(m).
-        """
+        equal to len(m)."""
         n = len(gamma)
         total = sum(gamma[i] * m[i] for i in range(n))
         return total / 100
