@@ -24,7 +24,7 @@ class AtomicAndNuclearPhysics:
         return total / 100
 
     def nuclear_radius(self, a: float) -> float:
-        """Computes a nucleus's radius, R, in fm given its atomic mass number"""
+        """Computes a nucleus's radius in fm given its atomic mass number"""
         return 1.25 * pow(a, 1 / 3)
 
     def rest_energy(self, m_0: float) -> float:
@@ -47,25 +47,36 @@ class AtomicAndNuclearPhysics:
         """Calculates a particle's non-relativistic kinetic energy"""
         return 0.5 * m_0 * v**2
 
+    def particle_speed(self, e_t: float, e_r: float) -> float:
+        """Computes the speed of any particle, relativistic or nonrelativistic, given its total
+        energy and rest energy"""
+        c = constants["c (m/s)"]
+        return c * sqrt(1 - e_r**2 / e_t**2)
+
     def neutron_speed(self, e: float) -> float:
         """Computes a neutron's speed in cm/s given its kinetic energy in eV"""
         return 1.383e6 * sqrt(e)
 
-    def photon_energy(self, nu: float, h_units="J-s") -> float:
+    def photon_energy(self, nu: float) -> float:
         """Obtains a photon's energy given its frequency. Second arg selects the units of Planck's
         constant. Can choose 'J-s' or 'eV-s'"""
-        h = constants[f"h ({h_units})"]
+        h = constants["h (J-s)"]
         return h * nu
 
-    def wavelength(self, p: float, h_units="J-s") -> float:
-        """Computes a particle's wavelength given its momentum and desired units of h"""
-        h = constants[f"h ({h_units})"]
+    def photon_wavelength(self, e: float) -> float:
+        """Calculates a photon's wavelength given its energy"""
+        h, c = constants["h (J-s)"], constants["c (m/s)"]
+        return h * c / e
+
+    def wavelength(self, p: float) -> float:
+        """Computes a particle's wavelength given its momentum"""
+        h = constants["h (J-s)"]
         return h / p
 
-    def wavelength_nonrel(self, m_0: float, e: float, h_units="J-s") -> float:
-        """Calculates a particle's non-relativistic wavelength given its rest mas and kinetic
+    def wavelength_nonrel(self, m_0: float, e: float) -> float:
+        """Calculates a particle's non-relativistic wavelength given its rest mass and kinetic
         energy"""
-        h = constants[f"h ({h_units})"]
+        h = constants["h (J-s)"]
         return h / sqrt(2 * m_0 * e)
 
     def neutron_wavelength(self, e: float) -> float:
@@ -77,10 +88,10 @@ class AtomicAndNuclearPhysics:
         energy"""
         return sqrt(e_t**2 - e_r**2) / constants["c (m/s)"]
 
-    def wavelength_rel(self, e_t: float, e_r: float, h_units="J-s") -> float:
-        """Computes the relativistic wavelength of a particle given its total energy, rest energy,
-        and selection of Planck's constant units"""
-        h = constants[f"h ({h_units})"]
+    def wavelength_rel(self, e_t: float, e_r: float) -> float:
+        """Computes the relativistic wavelength of a particle given its total energy and rest
+        energy"""
+        h = constants["h (J-s)"]
         return h * constants["c (m/s)"] / sqrt(e_t - e_r)
 
     def decay_constant(self, half_life: float) -> float:

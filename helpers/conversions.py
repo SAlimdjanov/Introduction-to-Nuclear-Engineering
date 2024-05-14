@@ -10,6 +10,8 @@ conversion_factors = {
     "MeV/amu": 931.502,
     "g/kg": 1000,
     "eV/MeV": 1e6,
+    "Btu/J": 9.418e-4,
+    "J/kWh": 3.6e6,
 }
 
 
