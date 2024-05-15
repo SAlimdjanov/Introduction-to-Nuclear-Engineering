@@ -79,6 +79,13 @@ class AtomicAndNuclearPhysics:
         h = constants["h (J-s)"]
         return h / sqrt(2 * m_0 * e)
 
+    def wavelength_w_compton(self, e_t: float, e_r: float) -> float:
+        """Computes a particle's relativistic wavelength given its total energy and rest energy,
+        in relation to the Compton wavelength"""
+        m_e, h, c = constants["m_e (kg)"], constants["h (J-s)"], constants["c (m/s)"]
+        lambda_c = h / (m_e * c)
+        return lambda_c * m_e * c**2 / sqrt(e_t**2 - e_r**2)
+
     def neutron_wavelength(self, e: float) -> float:
         """Returns a neutron's wavelength in cm given its kinetic energy in eV"""
         return 2.860e-9 / sqrt(e)
