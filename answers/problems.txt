@@ -1,0 +1,64 @@
+Problem 2.1: n = 4 and p = 3, n = 12 and p = 12, n = 81 and p = 54, n = 126 and p = 83, n = 136 and p = 86
+Problem 2.2: 59Co is 4.91 times heavier than 12C
+Problem 2.3: 5.018e+23 atoms
+Problem 2.4: 2.015982 amu, 18.015362 amu, 34.014742 amu
+Problem 2.5: 99.97 %, 0.03 %, 2.25e-06 %
+Problem 2.6: 238.01868 amu
+Problem 2.7: 2.7754 mol, 3.3428e+24 atoms, 5.0142e+20 atoms
+Problem 2.8: 2.235 cm
+Problem 2.9: 1.0072 amu
+Problem 2.10: 235.04393 amu, 3.903e-22 g
+Problem 2.11: Derivation Question
+Problem 2.12: 8.673e-12 %
+Problem 2.13: 1.83e+14 g/cm^3, 1.83e+11 kg/m^3
+Problem 2.14: The earth's radius would be 1.98e+04 m if it was as dense as nuclear matter
+Problem 2.15: 2.95e+03 tonnes
+Problem 2.16: 2.28e+04 kWh, 0.95 MWd
+Problem 2.17: 1.293 MeV
+Problem 2.18: 8.01e-13 J, 8.83e-13 J, 9.82e-30 kg
+Problem 2.19: Derivation Question
+Problem 2.20: Derivation Question
+Problem 2.21: 2.82e+08 m/s
+Problem 2.22: 1.24e-12 m, 2.86e-14 m
+Problem 2.23: Derivation Question
+Problem 2.24: 8.72e-13 m
+Problem 2.25: 2.0 m_e c^2, 2.0 m_e, 0.866 c, 0.577 lambda_C
+Problem 2.26: Derivation Question, 5.53e-07 eV, 0.000878 MeV
+Problem 2.27: 0.158 MeV, 0.05 MeV, 0.195 MeV, 0.403 MeV, 0.208 MeV, 0.245 MeV
+Problem 2.28: 18N -> 18O, 83Y -> 83Sr -> Rb -> 83Kr, 135Sb -> 135Te -> 135I -> 135Xe -> 135Cs -> 135Ba, 219Rn -> 215Po -> 211Pb -> 211Bi -> 207Tl -> 207Pb
+Problem 2.29: 3H -> 3He, 1.04e-07 g
+Problem 2.30: 8.22 g
+Problem 2.31: 1.6 %
+Problem 2.32: 0.00034 %
+Problem 2.33: 7.9e+15 atoms/cm^3, 9.04e+13 atoms/cm^3
+Problem 2.34: 3.05e+10 disintegrations/(cm^3-s), 9.62e+18 disintegrations/cm^3
+Problem 2.35: 7.057 kg
+Problem 2.36: 30.12 Ci/W, 0.0004766 W/g, 0.005957 W/cm^3, 0.01222 W
+Problem 2.37: 1.73e+09 yr
+Problem 2.38: Derivation Question
+Problem 2.39: Derivation Question
+Problem 2.40: Derivation Question
+Problem 2.41: The half-life of 238U >> others in the decay chain, it has the most influence.
+Problem 2.42: 0.348 Ci/ton
+Problem 2.43: 0.479 atoms/cm^3
+Problem 2.44: Derivation Question
+Problem 2.45: -18.351 MeV, 5.6915 MeV, 0.62411 MeV, 4.555 MeV, -6.7441 MeV
+Problem 2.46: 2.148 MeV, 6.93 MeV
+Problem 2.47: Derivation Question
+Problem 2.48: 17.6 MeV
+Problem 2.49: 209.9828 amu
+Problem 2.50: 6.965 keV, 6.2597 MeV, 6.2597 MeV, 8.4897 MeV
+Problem 2.51: 32.025 MeV, 58.21 MeV, 28.318 MeV, -2.6362 MeV
+Problem 2.52: 1.118 MeV, 7.079 MeV, 7.685 MeV, 8.747 MeV, 8.398 MeV, 7.596 MeV
+Problem 2.53: 1.608 MeV, 7.267 MeV, 8.121 MeV, 8.74 MeV, 8.421 MeV, 7.603 MeV
+Problem 2.54: 20.59 MeV, 7.256 MeV, 4.154 MeV, 11.06 MeV, 7.377 MeV, 5.3 MeV
+Problem 2.55: Derivation Question
+Problem 2.56: 6.324e+17 eV/cm^3
+Problem 2.57: 8.02e+22 atoms/cm^3
+Problem 2.58: 6.824e-05 Ci
+Problem 2.59: 1.2e+21 atoms/cm^3
+Problem 2.60: 0.05474 Ci, 2.025e+09 Bq
+Problem 2.61: 237.3 amu, 8.292e+21 atoms/cm^3
+Problem 2.62: 8.537e+20 atoms/cm^3, 2.324e+22 atoms/cm^3
+Problem 2.63: 4.7e+20 atoms/g, 1.414e+20 atoms/g, 3.636e+19 atoms/g, 1.778e+19 atoms/g
+
