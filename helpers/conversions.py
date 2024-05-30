@@ -8,10 +8,11 @@ Notes:
 """
 
 conversion_factors = {
+    "J/eV": 1.6022e-19,
     "J/MeV": 1.6022e-13,
+    "MeV/amu": 931.502,
     "g/amu": 1.6606e-24,
     "g/electron": 9.1095e-28,
-    "MeV/amu": 931.502,
     "g/kg": 1000,
     "eV/MeV": 1e6,
     "Btu/J": 9.418e-4,
@@ -20,6 +21,7 @@ conversion_factors = {
     "L/mol": 22.4,
     "mL/L": 1e3,
     "Pa/atm": 101325,
+    "m/fm": 1e-15,
     "s/us": 1e-6,
     "s/min": 60,
     "s/hr": 3600,

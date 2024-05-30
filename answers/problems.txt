@@ -1,4 +1,4 @@
-Problem 2.1: n = 4 and p = 3, n = 12 and p = 12, n = 81 and p = 54, n = 126 and p = 83, n = 136 and p = 86
+Problem 2.1: n = 4, p = 3; n = 12, p = 12; n = 81, p = 54; n = 126, p = 83; n = 136, p = 86
 Problem 2.2: 59Co is 4.91 times heavier than 12C
 Problem 2.3: 5.018e+23 atoms
 Problem 2.4: 2.015982 amu, 18.015362 amu, 34.014742 amu
@@ -12,7 +12,7 @@ Problem 2.11: Derivation Question
 Problem 2.12: 8.673e-12 %
 Problem 2.13: 1.83e+14 g/cm^3, 1.83e+11 kg/m^3
 Problem 2.14: The earth's radius would be 1.98e+04 m if it was as dense as nuclear matter
-Problem 2.15: 2.95e+03 tonnes
+Problem 2.15: 2.95e+03 t
 Problem 2.16: 2.28e+04 kWh, 0.95 MWd
 Problem 2.17: 1.293 MeV
 Problem 2.18: 8.01e-13 J, 8.83e-13 J, 9.82e-30 kg
@@ -31,7 +31,7 @@ Problem 2.30: 8.22 g
 Problem 2.31: 1.6 %
 Problem 2.32: 0.00034 %
 Problem 2.33: 7.9e+15 atoms/cm^3, 9.04e+13 atoms/cm^3
-Problem 2.34: 3.05e+10 disintegrations/(cm^3-s), 9.62e+18 disintegrations/cm^3
+Problem 2.34: 3.05e+10 Ci/cm^3, 9.62e+18 disintegrations/cm^3
 Problem 2.35: 7.057 kg
 Problem 2.36: 30.12 Ci/W, 0.0004766 W/g, 0.005957 W/cm^3, 0.01222 W
 Problem 2.37: 1.73e+09 yr
@@ -39,7 +39,7 @@ Problem 2.38: Derivation Question
 Problem 2.39: Derivation Question
 Problem 2.40: Derivation Question
 Problem 2.41: The half-life of 238U >> others in the decay chain, it has the most influence.
-Problem 2.42: 0.348 Ci/ton
+Problem 2.42: 0.348 Ci/t
 Problem 2.43: 0.479 atoms/cm^3
 Problem 2.44: Derivation Question
 Problem 2.45: -18.351 MeV, 5.6915 MeV, 0.62411 MeV, 4.555 MeV, -6.7441 MeV

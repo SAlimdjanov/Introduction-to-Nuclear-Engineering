@@ -4,7 +4,7 @@ chapter_2_problems.py
 """
 
 from math import log, sqrt, pi
-from typing import List, Tuple
+from helpers.answer_types import SingleAnswer, MultiPartAnswer
 from helpers.data import constants, abundances, atomic_masses, half_lives
 from helpers.conversions import conversion_factors
 from helpers.chapter_formulae.chapter_2 import AtomicAndNuclearPhysics
@@ -17,15 +17,11 @@ class Chapter2Problems:
     type_and_chapter = ("Problem", 2)
     formulae = AtomicAndNuclearPhysics()
 
-    def problem_2_1(self) -> List[str]:
+    def problem_2_1(self) -> str:
         """How many neutrons and protons are there in the nuclei of the following atoms:
         (a) 7Li, (b) 24Mg, (c) 135Xe, (d) 209Bi, (e) 222Rn"""
         return [
-            "n = 4 and p = 3",
-            "n = 12 and p = 12",
-            "n = 81 and p = 54",
-            "n = 126 and p = 83",
-            "n = 136 and p = 86",
+            "n = 4, p = 3; n = 12, p = 12; n = 81, p = 54; n = 126, p = 83; n = 136, p = 86"
         ]
 
     def problem_2_2(self) -> str:
@@ -33,15 +29,15 @@ class Chapter2Problems:
         ratio = atomic_masses["59Co"] / atomic_masses["12C"]
         return f"59Co is {ratio:.3g} times heavier than 12C"
 
-    def problem_2_3(self) -> Tuple[float, str, int]:
+    def problem_2_3(self) -> SingleAnswer:
         """How many atoms are there in 10 g of 12C?"""
         mass_12c = 10
         mol_12c = mass_12c / atomic_masses["12C"] * abundances["12C"] / 100
         n_a = constants["N_A (1/(g-mol))"]
         atoms = mol_12c * n_a
-        return atoms, "atoms", 4
+        return SingleAnswer(ans=atoms, units="atoms", sig_figs=4).format()
 
-    def problem_2_4(self) -> List[Tuple[float, str, int]]:
+    def problem_2_4(self) -> MultiPartAnswer:
         """Compute the molecular weights of:
         (a) H_2 gas, (b) H_2 O, (c) H_2 O_2"""
         gamma_1h, gamma_2h = abundances["1H"], abundances["2H"]
@@ -54,12 +50,14 @@ class Chapter2Problems:
         gamma_i = [abundances["16O"], abundances["17O"], abundances["18O"]]
         m_i = [atomic_masses["16O"], atomic_masses["17O"], atomic_masses["18O"]]
         m_o = self.formulae.average_atomic_weight(gamma_i, m_i)
-        m_h2o = m_h2 + m_o
+        m_h_2o = m_h2 + m_o
         # c) Hydrogen peroxide
-        m_h2o2 = m_h2 + m_o * 2
-        return [(m_h2, "amu", 8), (m_h2o, "amu", 8), (m_h2o2, "amu", 8)]
+        m_h_2o_2 = m_h2 + m_o * 2
+        return MultiPartAnswer(
+            ans=[m_h2, m_h_2o, m_h_2o_2], units="amu", sig_figs=8
+        ).format()
 
-    def problem_2_5(self) -> List[Tuple[float, str, int]]:
+    def problem_2_5(self) -> MultiPartAnswer:
         """When H_2 gas is formed from naturally occurring hydrogen, what percentages of the
         molecules have molecular weights of approximately 2, 3, and 4?"""
         # Four possible combinations involving hydrogen and deuterium: 1H 1H, 2H 1H, 1H 2H, 2H 2H
@@ -69,7 +67,7 @@ class Chapter2Problems:
         mass_4 = ((gamma_2h / 100) ** 2) * 100
         return [(mass_2, "%", 4), (mass_3, "%", 4), (mass_4, "%", 4)]
 
-    def problem_2_6(self) -> Tuple[float, str, int]:
+    def problem_2_6(self) -> SingleAnswer:
         """Natural uranium is composed of three isotopes: 234U, 235U, and 238U. Their abundances
         and atomic weights are given in the following table. Compute the atomic weight of natural
         uranium."""
@@ -78,7 +76,7 @@ class Chapter2Problems:
         m = self.formulae.average_atomic_weight(gamma_i, m_i)
         return m, "amu", 8
 
-    def problem_2_7(self) -> List[Tuple[float, str, int]]:
+    def problem_2_7(self) -> MultiPartAnswer:
         """A beaker contains 50 g of naturally occuring water
         (a) How many moles of water are present?
         (b) How many atoms are hydrogen atoms?
@@ -90,13 +88,13 @@ class Chapter2Problems:
         hydrogen_atoms = 2 * moles * constants["N_A (1/(g-mol))"]
         # c) Multiply by the deuterium abundance fraction
         deuterium_atoms = abundances["2H"] * hydrogen_atoms / 100
-        return [
-            (moles, "mol", 5),
-            (hydrogen_atoms, "atoms", 5),
-            (deuterium_atoms, "atoms", 5),
-        ]
+        return MultiPartAnswer(
+            ans=[moles, hydrogen_atoms, deuterium_atoms],
+            units=["mol", "atoms", "atoms"],
+            sig_figs=5,
+        ).format()
 
-    def problem_2_8(self) -> Tuple[float, str, int]:
+    def problem_2_8(self) -> SingleAnswer:
         """The glass in Example 2.1 has an inside diameter of 7.5 cm. How high does the water stand
         in the glass?"""
         h_atoms = 6.6e24
@@ -110,24 +108,26 @@ class Chapter2Problems:
         # the height:
         rho_h2o, r = 1, 7.5 / 2  # g/cm^3, cm
         h = mass_h2o / (rho_h2o * pi * r**2)
-        return h, "cm", 4
+        return SingleAnswer(ans=h, units="cm", sig_figs=4).format()
 
-    def problem_2_9(self) -> Tuple[float, str, int]:
+    def problem_2_9(self) -> SingleAnswer:
         """Calculate the mass of a proton in amu"""
         m_p = (
             constants["m_p (kg)"]
             * conversion_factors["g/kg"]
             / conversion_factors["g/amu"]
         )
-        return m_p, "amu", 5
+        return SingleAnswer(ans=m_p, units="amu", sig_figs=5).format()
 
-    def problem_2_10(self) -> List[Tuple[float, str, int]]:
+    def problem_2_10(self) -> MultiPartAnswer:
         """Calculate the mass of a neutral atom of 235U in: a) amu, b) grams"""
         # a) Mass in amu
         m_235u = atomic_masses["235U"]
         # b) Mass in grams
         m_235u_g = m_235u / constants["N_A (1/(g-mol))"]
-        return [(m_235u, "amu", 8), (m_235u_g, "g", 5)]
+        return MultiPartAnswer(
+            ans=[m_235u, m_235u_g], units=["amu", "g"], sig_figs=[8, 5]
+        ).format()
 
     def problem_2_11(self) -> str:
         """Show that 1 amu is numerically equal to the reciprocal of Avogadro's number"""
@@ -139,12 +139,12 @@ class Chapter2Problems:
         # The empirical atomic radius of uranium is 175 pm
         r = 175e-12  # m
         a = 238
-        r_238u = self.formulae.nuclear_radius(a) / 1e15  # m
+        r_238u = self.formulae.nuclear_radius(a) * conversion_factors["m/fm"]  # m
         # Fraction involves dividing the volume, simplified to:
         fraction = (r_238u / r) ** 3
         return f"{fraction * 100:.4g} %"
 
-    def problem_2_13(self) -> List[Tuple[float, str, int]]:
+    def problem_2_13(self) -> MultiPartAnswer:
         """Estimate the density of nuclear matter in g/cm^3 and kg/m^3. Take the mass of each
         nucleon to be 1.5*10^-24 g."""
         nucleon_mass = 1.5e-24
@@ -156,8 +156,10 @@ class Chapter2Problems:
         # The density in g/cm^3:
         rho_g = nucleon_mass * nucleon_density
         # In kg/m^3:
-        rho_kg = rho_g / 1000
-        return [(rho_g, "g/cm^3", 3), (rho_kg, "kg/m^3", 3)]
+        rho_kg = rho_g / conversion_factors["g/kg"]
+        return MultiPartAnswer(
+            ans=[rho_g, rho_kg], units=["g/cm^3", "kg/m^3"], sig_figs=3
+        ).format()
 
     def problem_2_14(self) -> str:
         """The planet earth has a mass of approximately 6*10^24 kg. If the density of the earth
@@ -169,7 +171,7 @@ class Chapter2Problems:
         radius = ((3 * approx_earth_mass) / (4 * pi * nuclear_density)) ** (1 / 3)
         return f"The earth's radius would be {radius:.3g} m if it was as dense as nuclear matter"
 
-    def problem_2_15(self) -> Tuple[float, str, int]:
+    def problem_2_15(self) -> SingleAnswer:
         """The complete combustion of 1 kg of bituminous coal releases about 3*10^7 J in heat
         energy. The conversion of 1 g of mass into energy is equivalent to the burning of how
         much coal?"""
@@ -177,9 +179,9 @@ class Chapter2Problems:
         e_btu = e * conversion_factors["Btu/J"]
         # Hard coal is rated at 13000 Btu/lb and 1 kg = 2.205 lb. 1000 kg = 1 tonne
         mass_tonnes = e_btu / (13000 * 2.205 * 1000)
-        return mass_tonnes, "tonnes", 3
+        return SingleAnswer(ans=mass_tonnes, units="t", sig_figs=3).format()
 
-    def problem_2_16(self) -> List[Tuple[float, str, int]]:
+    def problem_2_16(self) -> MultiPartAnswer:
         """The fission of the nucleus of 235U releases approximated 200 MeV. How much energy in
         kW-hrs and MW-days is released when 1 g of 235U undergoes fission?"""
         a = 235
@@ -188,14 +190,16 @@ class Chapter2Problems:
         e_kwh = e * conversion_factors["J/MeV"] / conversion_factors["J/kWh"]
         # 1000 kW = 1 MW, 24 hrs = 1 day
         e_mwd = e_kwh / (1000 * 24)
-        return [(e_kwh, "kWh", 3), (e_mwd, "MWd", 3)]
+        return MultiPartAnswer(
+            ans=[e_kwh, e_mwd], units=["kWh", "MWd"], sig_figs=3
+        ).format()
 
-    def problem_2_17(self) -> Tuple[float, str, int]:
+    def problem_2_17(self) -> SingleAnswer:
         """Compute the neutron-proton mass difference in MeV."""
         delta_m = abs(constants["m_p (MeV)"] - constants["m_n (MeV)"])
-        return delta_m, "MeV", 4
+        return SingleAnswer(ans=delta_m, units="MeV", sig_figs=4).format()
 
-    def problem_2_18(self) -> List[Tuple[float, str, int]]:
+    def problem_2_18(self) -> MultiPartAnswer:
         """An electron starting from rest is accelerated across a potential difference of 5
         million volts.
         (a) What is its final kinetic energy?
@@ -210,7 +214,9 @@ class Chapter2Problems:
         e_total = e_k + e_rest
         # c) e_total = m * c^2. The final mass calculation is simple
         m_f = e_total / c**2
-        return [(e_k, "J", 3), (e_total, "J", 3), (m_f, "kg", 3)]
+        return MultiPartAnswer(
+            ans=[e_k, e_total, m_f], units=["J", "J", "kg"], sig_figs=3
+        ).format()
 
     def problem_2_19(self) -> str:
         """Derive Eq. (2.18)"""
@@ -221,16 +227,16 @@ class Chapter2Problems:
         following formula: v = c * sqrt(1 - E_rest^2/E_total^2)"""
         return "Derivation Question"
 
-    def problem_2_21(self) -> Tuple[float, str, int]:
+    def problem_2_21(self) -> SingleAnswer:
         """Using the equation in Problem 2.20, calculated the speed of a 1 MeV electron, one with a
         kinetic energy of 1 MeV"""
         m_e, c = constants["m_e (kg)"], constants["c (m/s)"]
         e_rest = self.formulae.rest_energy(m_e) / conversion_factors["J/MeV"]
         e_total = e_rest + 1
         v = c * sqrt(1 - e_rest**2 / e_total**2)
-        return v, "m/s", 3
+        return SingleAnswer(ans=v, units="m/s", sig_figs=3).format()
 
-    def problem_2_22(self) -> List[Tuple[float, str, int]]:
+    def problem_2_22(self) -> MultiPartAnswer:
         """Compute the wavelengths of a 1 MeV: (a) photon, (b) neutron"""
         # a)
         e_t_photon = 1 * conversion_factors["J/MeV"]
@@ -238,23 +244,25 @@ class Chapter2Problems:
         # b)
         m_n = constants["m_n (kg)"]
         lambda_neutron = self.formulae.wavelength_nonrel(m_n, e_t_photon)
-        return [(lambda_photon, "m", 3), (lambda_neutron, "m", 3)]
+        return MultiPartAnswer(
+            ans=[lambda_photon, lambda_neutron], units="m", sig_figs=3
+        ).format()
 
     def problem_2_23(self) -> str:
         """Show that the wavelength of a relativistic particle is given by:
         lambda = lambda_C * m_e * c^2 / sqrt(e_total^2 - e_rest^2)"""
         return "Derivation Question"
 
-    def problem_2_24(self) -> Tuple[float, str, int]:
+    def problem_2_24(self) -> SingleAnswer:
         """Using the formula obtained in Problem 2.23, compute the wavelength of a 1 MeV electron"""
         m_e, h, c = constants["m_e (kg)"], constants["h (J-s)"], constants["c (m/s)"]
         e_rest = self.formulae.rest_energy(m_e)
         e_total = 1 * conversion_factors["J/MeV"] + e_rest
         lambda_c = h / (m_e * c)
         lambda_ = (lambda_c * m_e * c**2) / sqrt(e_total**2 - e_rest**2)
-        return lambda_, "m", 3
+        return SingleAnswer(ans=lambda_, units="m", sig_figs=3).format()
 
-    def problem_2_25(self) -> List[Tuple[float, str, int]]:
+    def problem_2_25(self) -> MultiPartAnswer:
         """An electron moves with a kinetic energy equal to its rest-mass energy. Calculate the
         electron's:
         (a) total energy in units of m_e c^2
@@ -271,12 +279,16 @@ class Chapter2Problems:
         # d)
         lambda_ = self.formulae.wavelength_w_compton(e_total, e_total / 2)
         lambda_c = h / (m_e * c)
-        return [
-            (e_total / (m_e * c**2), "m_e c^2", 3),
-            (m / m_e, "m_e", 3),
-            (v / c, "c", 3),
-            (lambda_ / lambda_c, "lambda_C", 3),
-        ]
+        # Expressing in appropriate units:
+        e_total /= m_e * c**2
+        m /= m_e
+        v /= c
+        lambda_ /= lambda_c
+        return MultiPartAnswer(
+            ans=[e_total, m, v, lambda_],
+            units=["m_e c^2", "m_e", "c", "lambda_C"],
+            sig_figs=3,
+        ).format()
 
     def problem_2_26(self) -> str:
         """A photon carries momentum, thus a free atom or nucleus recoils when it emits a photon.
@@ -353,7 +365,7 @@ class Chapter2Problems:
         mass = num_atoms * m_3h / n_a
         return f"{decay_chain}, {mass:.3g} g"
 
-    def problem_2_30(self) -> Tuple[float, str, int]:
+    def problem_2_30(self) -> SingleAnswer:
         """Approximately what mass of 90Sr (half-life = 28.8 yr) has the same activity as 1 g of
         60Co (half-life = 5.26 yr)?"""
         mass_60co = 1
@@ -369,9 +381,9 @@ class Chapter2Problems:
         num_atoms_co = mass_60co * n_a / m_60co
         num_atoms_sr = num_atoms_co * lambda_co / lambda_sr
         mass_sr = num_atoms_sr * m_90sr / n_a
-        return mass_sr, "g", 3
+        return SingleAnswer(ans=mass_sr, units="g", sig_figs=3).format()
 
-    def problem_2_31(self) -> Tuple[float, str, int]:
+    def problem_2_31(self) -> SingleAnswer:
         """Carbon tetrachloride labeled with 14C is sold commercially with an activity of 10 mCi/mM.
         What fraction of the carbon atoms is 14C?"""
         n_a, d = (
@@ -387,9 +399,10 @@ class Chapter2Problems:
         n_atoms_14c = activity_ccl4 / lambda_
         # The fraction is therefore:
         fraction = n_atoms_14c / n_atoms_c
-        return fraction * 100, "%", 2
+        fraction *= 100
+        return SingleAnswer(ans=fraction, units="%", sig_figs=2).format()
 
-    def problem_2_32(self) -> str:
+    def problem_2_32(self) -> SingleAnswer:
         """Titrated water (ordinary water containing some 1H 3HO) for some biological applications
         can be purchased in 1 cm^3 ampoules having an activity of 5 mCi/cm^3. What fraction of the
         water molecules contains an 3H atom?"""
@@ -403,9 +416,9 @@ class Chapter2Problems:
         alpha = 5e-3 * v * d  # disintegrations/s
         n = alpha / lambda_
         fraction = (n / n_a) * 100
-        return fraction, "%", 3
+        return SingleAnswer(ans=fraction, units="%", sig_figs=3).format()
 
-    def problem_2_33(self) -> List[Tuple[float, str, int]]:
+    def problem_2_33(self) -> MultiPartAnswer:
         """After the initial cleanup effort at Three Mile Island, approximately 400,000 gallons of
         radioactive water remained in the basement of the containment building of the Three Mile
         Island Unit 2 nuclear plant. The principle sources of this radioactivity were 137Cs at 156
@@ -420,9 +433,11 @@ class Chapter2Problems:
         # Number of atoms
         n_137cs = alpha_137cs * 1e-6 * d / lambda_137cs
         n_134cs = alpha_134cs * 1e-6 * d / lambda_134cs
-        return [(n_137cs, "atoms/cm^3", 3), (n_134cs, "atoms/cm^3", 3)]
+        return MultiPartAnswer(
+            ans=[n_137cs, n_134cs], units="atoms/cm^3", sig_figs=3
+        ).format()
 
-    def problem_2_34(self) -> List[Tuple[float, str, int]]:
+    def problem_2_34(self) -> MultiPartAnswer:
         """One gram of 226Ra is placed in a sealed, evacuated capsule 1.2 cm^3 in volume.
         (a) At what rate does the helium pressure increase in the capsule, assuming all of the alpha
         particles are neutralized and retained in the free volume of the capsule?
@@ -433,15 +448,17 @@ class Chapter2Problems:
         n = 1 * n_a / (226 * 1.2)  # atoms/cm^3
         alpha = lambda_ * n  # disintegrations/(cm^3-s)
         # b) The activity per unit volume increases linearly with time
-        t = 10 * 365 * 24 * 3600  # s
+        t = 10 * conversion_factors["s/yr"]  # s
         p = alpha * t
-        return [(alpha, "disintegrations/(cm^3-s)", 3), (p, "disintegrations/cm^3", 3)]
+        return MultiPartAnswer(
+            ans=[alpha, p], units=["Ci/cm^3", "disintegrations/cm^3"], sig_figs=3
+        ).format()
 
-    def problem_2_35(self) -> Tuple[float, str, int]:
+    def problem_2_35(self) -> SingleAnswer:
         """Polonium-210 decays to the ground state of 206Pb by the emission of a 5.305-MeV alpha
         particle with a half-life of 138 days. What mass of 21OPo is required to produce 1 MW of
         thermal energy from its radioactive decay?"""
-        e, t = 5.305e6, 138 * 24 * 3600
+        e, t = 5.305e6, 138 * conversion_factors["s/day"]
         n_a, d = (
             constants["N_A (1/(g-mol))"],
             conversion_factors["Bq/Ci"],
@@ -453,9 +470,10 @@ class Chapter2Problems:
         # Since alpha = lambda * N = lambda * m * N_A / M
         lambda_ = self.formulae.decay_constant(t)
         m = alpha * 210 / (lambda_ * n_a)
-        return m / 1000, "kg", 4
+        m /= conversion_factors["g/kg"]
+        return SingleAnswer(ans=m, units="kg", sig_figs=4).format()
 
-    def problem_2_36(self) -> List[Tuple[float, str, int]]:
+    def problem_2_36(self) -> MultiPartAnswer:
         """The radioisotope generator SNAP-9 was fueled with 475 g of 238PuC (plutonium-238
         carbide), which has a density of 12.5 g/cm^3. The 238 Pu has a half-life of 89 years and
         emits 5.6 MeV per disintegration, all of which may be assumed to be absorbed in the
@@ -464,7 +482,7 @@ class Chapter2Problems:
         (b) the specific power in watts (thermal) per gram of fuel
         (c) the power density in watts (thermal) per cm^3
         (d) the total electrical power of the generator"""
-        m, rho, t, e = 475, 12.5, 89 * 365 * 24 * 3600, 5.6
+        m, rho, t, e = 475, 12.5, 89 * conversion_factors["s/yr"], 5.6
         n_a = constants["N_A (1/(g-mol))"]
         # a)
         d = conversion_factors["Bq/Ci"]
@@ -486,9 +504,11 @@ class Chapter2Problems:
         pd = rho * p
         # d)
         p_total = m * p * 5.4 / 100
-        return [(eff, "Ci/W", 4), (p, "W/g", 4), (pd, "W/cm^3", 4), (p_total, "W", 4)]
+        return MultiPartAnswer(
+            ans=[eff, p, pd, p_total], units=["Ci/W", "W/g", "W/cm^3", "W"], sig_figs=4
+        ).format()
 
-    def problem_2_37(self) -> Tuple[float, str, int]:
+    def problem_2_37(self) -> SingleAnswer:
         """Since the half-life of 235U (7.13 * 10^8 years) is less than that of 238U (4.51 * 10^9
         years), the isotopic abundance of 235U has been steadily decreasing since the earth was
         formed about 4.5 billion years ago. How long ago was the isotopic abundance of 235U equal
@@ -503,8 +523,8 @@ class Chapter2Problems:
         # decay equation:
         a = 0.72 / 100
         t = abs(log(a * x_238 / (x_235 * (1 - a))) / (lambda_235 - lambda_238))
-        t /= 365 * 24 * 3600
-        return t, "yr", 3
+        t /= conversion_factors["s/yr"]
+        return SingleAnswer(ans=t, units="yr", sig_figs=3).format()
 
     def problem_2_38(self) -> str:
         """The radioactive isotope Y is produced at the rate of R atoms/sec by neutron bombardment
@@ -534,7 +554,7 @@ class Chapter2Problems:
         solely from the decay of 238U"""
         return "The half-life of 238U >> others in the decay chain, it has the most influence."
 
-    def problem_2_42(self) -> Tuple[float, str, int]:
+    def problem_2_42(self) -> SingleAnswer:
         """Radon-222, a highly radioactive gas with a half-life of 3.8 days that originates in the
         decay of 234U (see the chart of nuclides), may be present in uranium mines in dangerous
         concentrations if the mines are not properly ventilated. Calculate the activity of 222Rn in
@@ -548,9 +568,9 @@ class Chapter2Problems:
         lambda_ = self.formulae.decay_constant(half_lives["234U"])
         alpha = self.formulae.activity_atom_density(lambda_, m_i[0], gamma)
         alpha *= 1e6 / conversion_factors["Bq/Ci"]
-        return alpha, "Ci/ton", 3
+        return SingleAnswer(ans=alpha, units="Ci/t", sig_figs=3).format()
 
-    def problem_2_43(self) -> str:
+    def problem_2_43(self) -> SingleAnswer:
         """According to U.S. Nuclear Regulatory Commission regulations, the maximum permissible
         concentration of radon-222 in air in equilibrium with its short-lived daughters is 3 pCi/L
         for nonoccupational exposure. This corresponds to how many atoms of radon-222 per cm^3?
@@ -567,7 +587,7 @@ class Chapter2Problems:
         # Since alpha = lambda * N, N = alpha/lambda
         lambda_ = self.formulae.decay_constant(t_total)
         n = alpha / lambda_
-        return n, "atoms/cm^3", 3
+        return SingleAnswer(ans=n, units="atoms/cm^3", sig_figs=3).format()
 
     def problem_2_44(self) -> str:
         """Consider again the decay chain in Problem 2.39 in which the nuclide A is produced at the
@@ -575,7 +595,7 @@ class Chapter2Problems:
         time."""
         return "Derivation Question"
 
-    def problem_2_45(self) -> List[Tuple[float, str, int]]:
+    def problem_2_45(self) -> MultiPartAnswer:
         """Complete the following reactions and calculate their Q values. [Note: The atomic weight
         of 14C is 14.003242.]
         (a) 4He(p,d) (b) 9Be(alpha,n) (c) 14N(n,p) (d) 115In(d,p) (e) 207Pb(gamma,n)"""
@@ -614,9 +634,11 @@ class Chapter2Problems:
             atomic_masses["206Pb"],
             atomic_masses["n"],
         )
-        return [(i, "MeV", 5) for i in [q_a, q_b, q_c, q_d, q_e]]
+        return MultiPartAnswer(
+            ans=[q_a, q_b, q_c, q_d, q_e], units="MeV", sig_figs=5
+        ).format()
 
-    def problem_2_46(self) -> List[Tuple[float, str, int]]:
+    def problem_2_46(self) -> MultiPartAnswer:
         """
         (a) Compute the recoil energy of the residual, daughter nucleus following the emission of a
         4.782-MeV alpha-particle by 226Ra.
@@ -633,7 +655,7 @@ class Chapter2Problems:
         )
         recoil = q - e_alpha
         # b) The disintegration energy is equal to the Q value
-        return [(i, "MeV", 4) for i in [recoil, q]]
+        return MultiPartAnswer(ans=[recoil, q], units="MeV", sig_figs=4).format()
 
     def problem_2_47(self) -> str:
         """In some tabulations, atomic masses are given in terms of the mass excess rather than as
@@ -644,15 +666,15 @@ class Chapter2Problems:
         # See formula q_value_mass_defects() for the result of this derivation and the next problem
         return "Derivation Question"
 
-    def problem_2_48(self) -> Tuple[float, str, int]:
+    def problem_2_48(self) -> SingleAnswer:
         """The mass excesses for the (neutral) atoms in the reaction in Example 2.8 are as follows:
         Δ(3H) = 14.95 MeV, Δ(2H) = 13.14 MeV, Δ(n) = 8.07 MeV, and Δ(4He) = 2.42 MeV. Calculate the
         Q value of this reaction using the results of Problem 2.47"""
         # The reaction is 3H + 2H -> 4He + n. Therefore:
         q = self.formulae.q_value_mass_defects(14.95, 13.14, 8.07, 2.42)
-        return q, "MeV", 5
+        return SingleAnswer(ans=q, units="MeV", sig_figs=5).format()
 
-    def problem_2_49(self) -> Tuple[float, str, int]:
+    def problem_2_49(self) -> SingleAnswer:
         """The atomic weight of 206Pb is 205.9745. Using the data in Problem 2.35, calculate the
         atomic weight of 210Po"""
         e_alpha = 5.305  # The alpha particle energy from Problem 2.35
@@ -665,9 +687,9 @@ class Chapter2Problems:
             + atomic_masses["206Pb"]
             + atomic_masses["4He"]
         )
-        return m_210po, "amu", 7
+        return SingleAnswer(ans=m_210po, units="amu", sig_figs=7).format()
 
-    def problem_2_50(self) -> List[Tuple[float, str, int]]:
+    def problem_2_50(self) -> MultiPartAnswer:
         """Tritium (3H) can be produced through the absorption of low-energy neutrons by deutrerium.
         The reaction is 2H + n → 3H + gamma, Where the gamma-ray has an energy of 6.256 MeV.
         (a) Show that the recoil energy of the 3H nucleus is approximately 7 KeV.
@@ -711,7 +733,7 @@ class Chapter2Problems:
         )
         return ", ".join(f"{i:.5g} MeV" for i in [be_6li, be_9be, be_4he, q])
 
-    def problem_2_52(self) -> List[Tuple[float, str, int]]:
+    def problem_2_52(self) -> MultiPartAnswer:
         """Using atomic mass data, compute the average binding energy per nucleon of the following
         nuclei: (a) 2H (b) 4He (c) 12C (d) 51V (e) 138Ba (f) 235U"""
         # Divide the binding energies by the atomic number
@@ -723,11 +745,13 @@ class Chapter2Problems:
             self.formulae.binding_energy(atomic_masses["138Ba"], z=56, n=82) / 138
         )
         be_235u = self.formulae.binding_energy(atomic_masses["235U"], z=92, n=143) / 235
-        return [
-            (i, "MeV", 4) for i in [be_2h, be_4he, be_12c, be_51v, be_138ba, be_235u]
-        ]
+        return MultiPartAnswer(
+            ans=[be_2h, be_4he, be_12c, be_51v, be_138ba, be_235u],
+            units="MeV",
+            sig_figs=4,
+        ).format()
 
-    def problem_2_53(self) -> List[Tuple[float, str, int]]:
+    def problem_2_53(self) -> MultiPartAnswer:
         """Using the mass formula, compute the binding energy per nucleon for the nuclei in Problem
         2.52. Compare the results with those obtained in that problem"""
         be_2h = self.formulae.binding_energy_mass_eqn(n=1, a=2, z=1) / 2
@@ -736,11 +760,13 @@ class Chapter2Problems:
         be_51v = self.formulae.binding_energy_mass_eqn(n=28, a=51, z=23) / 51
         be_138ba = self.formulae.binding_energy_mass_eqn(n=82, a=138, z=56) / 138
         be_235u = self.formulae.binding_energy_mass_eqn(n=143, a=235, z=92) / 235
-        return [
-            (i, "MeV", 4) for i in [be_2h, be_4he, be_12c, be_51v, be_138ba, be_235u]
-        ]
+        return MultiPartAnswer(
+            ans=[be_2h, be_4he, be_12c, be_51v, be_138ba, be_235u],
+            units="MeV",
+            sig_figs=4,
+        ).format()
 
-    def problem_2_54(self) -> List[Tuple[float, str, int]]:
+    def problem_2_54(self) -> MultiPartAnswer:
         """Compute the separation energies of the last neutron in the following nuclei:
         (a) 4He (b) 7Li (c) 17O (d) 51V (e) 208Pb (f) 235U"""
         # Using the separation energy formula:
@@ -762,26 +788,28 @@ class Chapter2Problems:
         e_235u = self.formulae.separation_energy(
             atomic_masses["234U"], atomic_masses["235U"]
         )
-        return [(i, "MeV", 4) for i in [e_4he, e_7li, e_17o, e_51v, e_208pb, e_235u]]
+        return MultiPartAnswer(
+            ans=[e_4he, e_7li, e_17o, e_51v, e_208pb, e_235u], units="MeV", sig_figs=4
+        ).format()
 
     def problem_2_55(self) -> str:
         """Derive Eq.(2.53)"""
         return "Derivation Question"
 
-    def problem_2_56(self) -> Tuple[float, str, int]:
+    def problem_2_56(self) -> SingleAnswer:
         """What is 1 atmosphere pressure in units of eV/cm^3?"""
         # Since 1 Pa = 1 N/m^2 and 1 J = 1 N-m and the conversion of MeV to eV and m to cm^3 cancels
         # out in terms of numerical value:
         p = 1 * conversion_factors["Pa/atm"] / conversion_factors["J/MeV"]
-        return p, "eV/cm^3", 4
+        return SingleAnswer(ans=p, units="eV/cm^3", sig_figs=4).format()
 
-    def problem_2_57(self) -> Tuple[float, str, int]:
+    def problem_2_57(self) -> SingleAnswer:
         """Calculate the atom density of graphite having a density of 1.60 g/cm^3"""
         # Graphite is comprised of carbon, therefore:
         n = self.formulae.atom_density(rho=1.6, m=atomic_masses["C"])
-        return n, "atoms/cm^3", 3
+        return SingleAnswer(ans=n, units="atoms/cm^3", sig_figs=3).format()
 
-    def problem_2_58(self) -> Tuple[float, str, int]:
+    def problem_2_58(self) -> SingleAnswer:
         """Calculate the activity of 1 gram of natural uranium"""
         # The average atomic weight of naturally occuring uranium was computed in Problem 2.6:
         m = self.problem_2_6()[0]
@@ -793,17 +821,17 @@ class Chapter2Problems:
             lambda_ = self.formulae.decay_constant(t[i])
             alpha += self.formulae.activity_atom_density(lambda_, m, gamma[i])
         alpha /= conversion_factors["Bq/Ci"]
-        return alpha, "Ci", 4
+        return SingleAnswer(ans=alpha, units="Ci", sig_figs=4).format()
 
-    def problem_2_59(self) -> Tuple[float, str, int]:
+    def problem_2_59(self) -> SingleAnswer:
         """What is the atom density of 235U in uranium enriched to 2.5 a/o in this isotope if the
         physical density of the uranium is 19.0 g/cm^3"""
         # The average atomic weight of naturally occuring uranium was computed in Problem 2.6:
         m, rho, w = self.problem_2_6()[0], 19.0, 2.5
         n = self.formulae.atom_density_component(w, rho, m)
-        return n, "atoms/cm^3", 3
+        return SingleAnswer(ans=n, units="atoms/cm^3", sig_figs=3).format()
 
-    def problem_2_60(self) -> List[Tuple[float, str, int]]:
+    def problem_2_60(self) -> MultiPartAnswer:
         """Plutonium-239 undergoes alpha-decay with a half-life of 24,000 years. Compute the
         activity of 1 gram of plutonium dioxide, 239PuO_2. Express the activity in terms of Ci
         and Bq"""
@@ -813,9 +841,11 @@ class Chapter2Problems:
         lambda_ = self.formulae.decay_constant(half_lives["239Pu"])
         alpha_bq = self.formulae.activity_atom_density(lambda_, m_239pu, gamma)
         alpha_ci = alpha_bq / conversion_factors["Bq/Ci"]
-        return [(alpha_ci, "Ci", 4), (alpha_bq, "Bq", 4)]
+        return MultiPartAnswer(
+            ans=[alpha_ci, alpha_bq], units=["Ci", "Bq"], sig_figs=4
+        ).format()
 
-    def problem_2_61(self) -> List[Tuple[float, str, int]]:
+    def problem_2_61(self) -> MultiPartAnswer:
         """It has been proposed to use uranium carbide (UC) for the initial fuel in certain types of
         breeder reactors, with the uranium enriched to 25 w/o. The density of UC is 13.6 g/cm^3
         (a) What is the atomic weight of the uranium?
@@ -830,9 +860,11 @@ class Chapter2Problems:
         n = self.formulae.atom_density_component(
             w=25, rho=rho_u, m=atomic_masses["235U"]
         )
-        return [(m_u, "amu", 4), (n, "atoms/cm^3", 4)]
+        return MultiPartAnswer(
+            ans=[m_u, n], units=["amu", "atoms/cm^3"], sig_figs=4
+        ).format()
 
-    def problem_2_62(self) -> List[Tuple[float, str, int]]:
+    def problem_2_62(self) -> MultiPartAnswer:
         """Compute the atom densities of 235U and 238U in UO_2 of physical density 10.8 g/cm^3 if
         the uranium is enriched to 3.5 w/o in 235U"""
         m_235u, m_238u = atomic_masses["235U"], atomic_masses["238U"]
@@ -842,9 +874,11 @@ class Chapter2Problems:
         rho_u = 10.8 * w
         n_235u = self.formulae.atom_density_component(w=3.5, rho=rho_u, m=m_235u)
         n_238u = self.formulae.atom_density_component(w=96.5, rho=rho_u, m=m_238u)
-        return [(n_235u, "atoms/cm^3", 4), (n_238u, "atoms/cm^3", 4)]
+        return MultiPartAnswer(
+            ans=[n_235u, n_238u], units="atoms/cm^3", sig_figs=4
+        ).format()
 
-    def problem_2_63(self) -> List[Tuple[float, str, int]]:
+    def problem_2_63(self) -> MultiPartAnswer:
         """The fuel for a certain breeder reactor consists of pellets composed of mixed oxides, UO_2
         and PuO_2, with the PuO_2 comprising approximately 30 w/o of the mixture. The uranium is
         essentially all 238U, whereas the plutonium contains the following isotopes: 239Pu
@@ -866,10 +900,10 @@ class Chapter2Problems:
         # Iteratively calculating the atom densities for each isotope
         for i in range(j):
             n.append(gamma[i] * self.formulae.atom_density_component(w, rho, m[i]))
-        return [(k, "atoms/g", 4) for k in n]
+        return MultiPartAnswer(ans=n, units="atoms/g", sig_figs=4).format()
 
 
 if __name__ == "__main__":
     ch2p = Chapter2Problems()
-    ans = AnswerWriter(obj=ch2p, num_questions=63, path="./answers/problems.txt")
-    ans.write_answers()
+    writer = AnswerWriter(obj=ch2p, num_questions=63, path="./answers/problems.txt")
+    writer.write_answers()
