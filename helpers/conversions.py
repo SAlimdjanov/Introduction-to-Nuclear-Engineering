@@ -3,6 +3,7 @@ conversions.py
 
 Notes:
 - The L/mol conversion factor is only applicable to an ideal gas
+- Bq/Ci is equivalent to (disintegrations/s)/Ci
 
 """
 
@@ -15,7 +16,7 @@ conversion_factors = {
     "eV/MeV": 1e6,
     "Btu/J": 9.418e-4,
     "J/kWh": 3.6e6,
-    "(disintegrations/s)/Ci": 3.7e10,
+    "Bq/Ci": 3.7e10,
     "L/mol": 22.4,
     "mL/L": 1e3,
     "Pa/atm": 101325,

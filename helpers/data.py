@@ -4,6 +4,7 @@ data.py
 Notes:
 - All values were obtained from the book unless otherwise stated
 - Units associated with quantities are commented at the top of each dictionary, where appropriate
+- Avagadro's number can also be expressed in units of atoms/mol
 - The atomic_masses and half_lives dictionaries contain a combination of values from Appendix II
   and the Table of Nuclides found at https://www-nds.iaea.org/relnsd/vcharthtml/VChartHTML.html
 
@@ -15,7 +16,7 @@ from .conversions import conversion_factors
 constants = {
     "amu (g)": 1.66054e-24,
     "amu (MeV)": 931.494,
-    "N_A (1/(g-mol))": 0.6022137e24,  # Can also be atoms/mol
+    "N_A (1/(g-mol))": 0.6022137e24,
     "k_B (J/K)": 1.38066e-23,
     "lambda_C (eV/K)": 8.61707e-5,
     "lambda_C (cm)": 2.42631e-10,
