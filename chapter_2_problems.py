@@ -4,9 +4,9 @@ chapter_2_problems.py
 """
 
 from math import log, sqrt, pi
+from helpers import conversions
 from helpers.answer_types import SingleAnswer, MultiPartAnswer
 from helpers.data import constants, abundances, atomic_masses, half_lives
-from helpers.conversions import conversion_factors
 from helpers.chapter_formulae.chapter_2 import AtomicAndNuclearPhysics
 from helpers.answer_writer import AnswerWriter
 
@@ -113,9 +113,7 @@ class Chapter2Problems:
     def problem_2_9(self) -> SingleAnswer:
         """Calculate the mass of a proton in amu"""
         m_p = (
-            constants["m_p (kg)"]
-            * conversion_factors["g/kg"]
-            / conversion_factors["g/amu"]
+            constants["m_p (kg)"] * conversions.mass["g/kg"] / conversions.mass["g/amu"]
         )
         return SingleAnswer(ans=m_p, units="amu", sig_figs=5).format()
 
@@ -139,7 +137,7 @@ class Chapter2Problems:
         # The empirical atomic radius of uranium is 175 pm
         r = 175e-12  # m
         a = 238
-        r_238u = self.formulae.nuclear_radius(a) * conversion_factors["m/fm"]  # m
+        r_238u = self.formulae.nuclear_radius(a) * conversions.length["m/fm"]  # m
         # Fraction involves dividing the volume, simplified to:
         fraction = (r_238u / r) ** 3
         return f"{fraction * 100:.4g} %"
@@ -156,7 +154,7 @@ class Chapter2Problems:
         # The density in g/cm^3:
         rho_g = nucleon_mass * nucleon_density
         # In kg/m^3:
-        rho_kg = rho_g / conversion_factors["g/kg"]
+        rho_kg = rho_g / conversions.mass["g/kg"]
         return MultiPartAnswer(
             ans=[rho_g, rho_kg], units=["g/cm^3", "kg/m^3"], sig_figs=3
         ).format()
@@ -176,7 +174,7 @@ class Chapter2Problems:
         energy. The conversion of 1 g of mass into energy is equivalent to the burning of how
         much coal?"""
         e = self.formulae.total_energy(1 / 1000)
-        e_btu = e * conversion_factors["Btu/J"]
+        e_btu = e * conversions.energy["Btu/J"]
         # Hard coal is rated at 13000 Btu/lb and 1 kg = 2.205 lb. 1000 kg = 1 tonne
         mass_tonnes = e_btu / (13000 * 2.205 * 1000)
         return SingleAnswer(ans=mass_tonnes, units="t", sig_figs=3).format()
@@ -187,7 +185,7 @@ class Chapter2Problems:
         a = 235
         n = constants["N_A (1/(g-mol))"] / a  # atoms/g
         e = n * 200  # MeV
-        e_kwh = e * conversion_factors["J/MeV"] / conversion_factors["J/kWh"]
+        e_kwh = e * conversions.energy["J/MeV"] / conversions.energy["J/kWh"]
         # 1000 kW = 1 MW, 24 hrs = 1 day
         e_mwd = e_kwh / (1000 * 24)
         return MultiPartAnswer(
@@ -231,7 +229,7 @@ class Chapter2Problems:
         """Using the equation in Problem 2.20, calculated the speed of a 1 MeV electron, one with a
         kinetic energy of 1 MeV"""
         m_e, c = constants["m_e (kg)"], constants["c (m/s)"]
-        e_rest = self.formulae.rest_energy(m_e) / conversion_factors["J/MeV"]
+        e_rest = self.formulae.rest_energy(m_e) / conversions.energy["J/MeV"]
         e_total = e_rest + 1
         v = c * sqrt(1 - e_rest**2 / e_total**2)
         return SingleAnswer(ans=v, units="m/s", sig_figs=3).format()
@@ -239,7 +237,7 @@ class Chapter2Problems:
     def problem_2_22(self) -> MultiPartAnswer:
         """Compute the wavelengths of a 1 MeV: (a) photon, (b) neutron"""
         # a)
-        e_t_photon = 1 * conversion_factors["J/MeV"]
+        e_t_photon = 1 * conversions.energy["J/MeV"]
         lambda_photon = self.formulae.photon_wavelength(e_t_photon)
         # b)
         m_n = constants["m_n (kg)"]
@@ -257,7 +255,7 @@ class Chapter2Problems:
         """Using the formula obtained in Problem 2.23, compute the wavelength of a 1 MeV electron"""
         m_e, h, c = constants["m_e (kg)"], constants["h (J-s)"], constants["c (m/s)"]
         e_rest = self.formulae.rest_energy(m_e)
-        e_total = 1 * conversion_factors["J/MeV"] + e_rest
+        e_total = 1 * conversions.energy["J/MeV"] + e_rest
         lambda_c = h / (m_e * c)
         lambda_ = (lambda_c * m_e * c**2) / sqrt(e_total**2 - e_rest**2)
         return SingleAnswer(ans=lambda_, units="m", sig_figs=3).format()
@@ -301,22 +299,18 @@ class Chapter2Problems:
         at 10.19 eV to ground and the first excited state of 12C at 4.43 MeV to ground
         """
         e_h, e_12c = (  # First excited states of H and 12C in J
-            10.19e-6 * conversion_factors["J/MeV"],
-            4.43 * conversion_factors["J/MeV"],
+            10.19e-6 * conversions.energy["J/MeV"],
+            4.43 * conversions.energy["J/MeV"],
         )
         m_h, m_12c = (  # Masses of H and 12C in kg
-            atomic_masses["H"]
-            * conversion_factors["g/amu"]
-            / conversion_factors["g/kg"],
-            atomic_masses["12C"]
-            * conversion_factors["g/amu"]
-            / conversion_factors["g/kg"],
+            atomic_masses["H"] * conversions.mass["g/amu"] / conversions.mass["g/kg"],
+            atomic_masses["12C"] * conversions.mass["g/amu"] / conversions.mass["g/kg"],
         )
         c = constants["c (m/s)"]
         e_gamma_h = e_h * (1 - e_h / (2 * m_h * c**2))
         e_gamma_12c = e_12c * (1 - e_12c / (2 * m_12c * c**2))
-        delta_e_h = (e_h - e_gamma_h) / conversion_factors["J/MeV"] * 10e6
-        delta_e_12c = (e_12c - e_gamma_12c) / conversion_factors["J/MeV"]
+        delta_e_h = (e_h - e_gamma_h) / conversions.energy["J/MeV"] * 10e6
+        delta_e_12c = (e_12c - e_gamma_12c) / conversions.energy["J/MeV"]
         return f"Derivation Question, {delta_e_h:.3g} eV, {delta_e_12c:.3g} MeV"
 
     def problem_2_27(self) -> str:
@@ -356,7 +350,7 @@ class Chapter2Problems:
         # b)
         n_a, d = (
             constants["N_A (1/(g-mol))"],
-            conversion_factors["Bq/Ci"],
+            conversions.activity["Bq/Ci"],
         )
         m_3h, half_life = atomic_masses["3H"], half_lives["3H"]
         alpha = 1e-3 * d  # disintegrations/s
@@ -388,7 +382,7 @@ class Chapter2Problems:
         What fraction of the carbon atoms is 14C?"""
         n_a, d = (
             constants["N_A (1/(g-mol))"],
-            conversion_factors["Bq/Ci"],
+            conversions.activity["Bq/Ci"],
         )
         activity_ccl4, t_14c = 10e-3, half_lives["14C"]
         # CCl_4 has one carbon atom per molecule. Therefore:
@@ -409,7 +403,7 @@ class Chapter2Problems:
         rho_1h3ho, m_1h3ho = 1.017, 20.04  # g/cm^3, g/mol
         n_a, d = (
             constants["N_A (1/(g-mol))"],
-            conversion_factors["Bq/Ci"],
+            conversions.activity["Bq/Ci"],
         )
         lambda_ = self.formulae.decay_constant(half_lives["3H"])
         v = m_1h3ho / rho_1h3ho  # cm^3/mol
@@ -426,7 +420,7 @@ class Chapter2Problems:
         the water at that time?"""
         alpha_137cs, alpha_134cs = 156, 26  # uCi/cm^3
         t_137cs, t_134cs = half_lives["137Cs"], half_lives["134Cs"]  # s
-        d = conversion_factors["Bq/Ci"]
+        d = conversions.activity["Bq/Ci"]
         # Decay constants
         lambda_137cs = self.formulae.decay_constant(t_137cs)
         lambda_134cs = self.formulae.decay_constant(t_134cs)
@@ -448,7 +442,7 @@ class Chapter2Problems:
         n = 1 * n_a / (226 * 1.2)  # atoms/cm^3
         alpha = lambda_ * n  # disintegrations/(cm^3-s)
         # b) The activity per unit volume increases linearly with time
-        t = 10 * conversion_factors["s/yr"]  # s
+        t = 10 * conversions.time["s/yr"]  # s
         p = alpha * t
         return MultiPartAnswer(
             ans=[alpha, p], units=["Ci/cm^3", "disintegrations/cm^3"], sig_figs=3
@@ -458,19 +452,19 @@ class Chapter2Problems:
         """Polonium-210 decays to the ground state of 206Pb by the emission of a 5.305-MeV alpha
         particle with a half-life of 138 days. What mass of 21OPo is required to produce 1 MW of
         thermal energy from its radioactive decay?"""
-        e, t = 5.305e6, 138 * conversion_factors["s/day"]
+        e, t = 5.305e6, 138 * conversions.time["s/day"]
         n_a, d = (
             constants["N_A (1/(g-mol))"],
-            conversion_factors["Bq/Ci"],
+            conversions.activity["Bq/Ci"],
         )
         # The power emitted per curie is:
-        p = e * d * conversion_factors["J/MeV"] / conversion_factors["eV/MeV"]  # eV/Ci
+        p = e * d * conversions.energy["J/MeV"] / conversions.energy["eV/MeV"]  # eV/Ci
         # To produce 1 MW, the desired activity is:
         alpha = 1e6 / p * d
         # Since alpha = lambda * N = lambda * m * N_A / M
         lambda_ = self.formulae.decay_constant(t)
         m = alpha * 210 / (lambda_ * n_a)
-        m /= conversion_factors["g/kg"]
+        m /= conversions.mass["g/kg"]
         return SingleAnswer(ans=m, units="kg", sig_figs=4).format()
 
     def problem_2_36(self) -> MultiPartAnswer:
@@ -482,11 +476,11 @@ class Chapter2Problems:
         (b) the specific power in watts (thermal) per gram of fuel
         (c) the power density in watts (thermal) per cm^3
         (d) the total electrical power of the generator"""
-        m, rho, t, e = 475, 12.5, 89 * conversion_factors["s/yr"], 5.6
+        m, rho, t, e = 475, 12.5, 89 * conversions.time["s/yr"], 5.6
         n_a = constants["N_A (1/(g-mol))"]
         # a)
-        d = conversion_factors["Bq/Ci"]
-        eff = 1 / e * 1 / d * 1 / conversion_factors["J/MeV"]
+        d = conversions.activity["Bq/Ci"]
+        eff = 1 / e * 1 / d * 1 / conversions.energy["J/MeV"]
         # b)
         lambda_ = self.formulae.decay_constant(t)
         p = (
@@ -494,9 +488,9 @@ class Chapter2Problems:
             * n_a
             / (
                 rho
-                * conversion_factors["L/mol"]
-                * conversion_factors["mL/L"]
-                * conversion_factors["Bq/Ci"]
+                * conversions.volume["L/mol"]
+                * conversions.volume["mL/L"]
+                * conversions.activity["Bq/Ci"]
                 * eff
             )
         )
@@ -523,7 +517,7 @@ class Chapter2Problems:
         # decay equation:
         a = 0.72 / 100
         t = abs(log(a * x_238 / (x_235 * (1 - a))) / (lambda_235 - lambda_238))
-        t /= conversion_factors["s/yr"]
+        t /= conversions.time["s/yr"]
         return SingleAnswer(ans=t, units="yr", sig_figs=3).format()
 
     def problem_2_38(self) -> str:
@@ -567,7 +561,7 @@ class Chapter2Problems:
         # Obtaining the activity in disintegrations/s
         lambda_ = self.formulae.decay_constant(half_lives["234U"])
         alpha = self.formulae.activity_atom_density(lambda_, m_i[0], gamma)
-        alpha *= 1e6 / conversion_factors["Bq/Ci"]
+        alpha *= 1e6 / conversions.activity["Bq/Ci"]
         return SingleAnswer(ans=alpha, units="Ci/t", sig_figs=3).format()
 
     def problem_2_43(self) -> SingleAnswer:
@@ -577,7 +571,7 @@ class Chapter2Problems:
         """
         # Since 1 mL = 1 cm^3, the activity can be represented as:
         alpha = (
-            3e-12 / conversion_factors["mL/L"] * conversion_factors["Bq/Ci"]
+            3e-12 / conversions.volume["mL/L"] * conversions.activity["Bq/Ci"]
         )  # (disintegrations/s)/cm^3
         # The short-lived daughters are 218Po, 214Pb, 214Bi, and 214Po based on the decay chain.
         t_218po, t_214po = half_lives["218Po"], half_lives["214Po"]
@@ -683,7 +677,7 @@ class Chapter2Problems:
         q = e_alpha
         # Rearranging the Q value formula:
         m_210po = (
-            q / (conversion_factors["MeV/amu"])
+            q / (conversions.energy["MeV/amu"])
             + atomic_masses["206Pb"]
             + atomic_masses["4He"]
         )
@@ -702,7 +696,7 @@ class Chapter2Problems:
         m_2h, m_3h, m_n = atomic_masses["2H"], atomic_masses["3H"], atomic_masses["n"]
         # a) The recoil energy can be obtained from the relation between kinetic energy and
         # momentum: 1/2 mv^2 = p^2/(2M), since p = mv = E/c: K = E^2/(2MC^2)
-        recoil = e_gamma**2 / (2 * m_3h * conversion_factors["MeV/amu"])
+        recoil = e_gamma**2 / (2 * m_3h * conversions.energy["MeV/amu"])
         recoil *= 1000  # keV
         # b) Q-value
         q = self.formulae.q_value_atomic_masses(m_2h, m_n, 0, m_3h)
@@ -800,7 +794,7 @@ class Chapter2Problems:
         """What is 1 atmosphere pressure in units of eV/cm^3?"""
         # Since 1 Pa = 1 N/m^2 and 1 J = 1 N-m and the conversion of MeV to eV and m to cm^3 cancels
         # out in terms of numerical value:
-        p = 1 * conversion_factors["Pa/atm"] / conversion_factors["J/MeV"]
+        p = 1 * conversions.pressure["Pa/atm"] / conversions.energy["J/MeV"]
         return SingleAnswer(ans=p, units="eV/cm^3", sig_figs=4).format()
 
     def problem_2_57(self) -> SingleAnswer:
@@ -820,7 +814,7 @@ class Chapter2Problems:
         for i in range(n):
             lambda_ = self.formulae.decay_constant(t[i])
             alpha += self.formulae.activity_atom_density(lambda_, m, gamma[i])
-        alpha /= conversion_factors["Bq/Ci"]
+        alpha /= conversions.activity["Bq/Ci"]
         return SingleAnswer(ans=alpha, units="Ci", sig_figs=4).format()
 
     def problem_2_59(self) -> SingleAnswer:
@@ -840,7 +834,7 @@ class Chapter2Problems:
         gamma = m_239pu / m_total
         lambda_ = self.formulae.decay_constant(half_lives["239Pu"])
         alpha_bq = self.formulae.activity_atom_density(lambda_, m_239pu, gamma)
-        alpha_ci = alpha_bq / conversion_factors["Bq/Ci"]
+        alpha_ci = alpha_bq / conversions.activity["Bq/Ci"]
         return MultiPartAnswer(
             ans=[alpha_ci, alpha_bq], units=["Ci", "Bq"], sig_figs=4
         ).format()

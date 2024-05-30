@@ -8,8 +8,8 @@ Method q_value_atomic_masses: Change input args to lists of reactants and produc
 
 from math import sqrt, exp, log, pi
 from typing import List
+from .. import conversions
 from ..data import constants, atomic_masses
-from ..conversions import conversion_factors
 
 
 class AtomicAndNuclearPhysics:
@@ -197,13 +197,13 @@ class AtomicAndNuclearPhysics:
         return (
             ((m_a + z_a * m_e) + (m_b + z_b * m_e))
             - ((m_c + z_c * m_e) + (m_d + z_d * m_e))
-        ) * conversion_factors["MeV/amu"]
+        ) * conversions.energy["MeV/amu"]
 
     def q_value_atomic_masses(
         self, m_a: float, m_b: float, m_c: float, m_d: float
     ) -> float:
         """Computes the q value with atomic masses in MeV"""
-        return ((m_a + m_b) - (m_c + m_d)) * conversion_factors["MeV/amu"]
+        return ((m_a + m_b) - (m_c + m_d)) * conversions.energy["MeV/amu"]
 
     def mass_defect(self, z: int, n: int, m: int) -> float:
         """Computes the mass defect of a nucleus"""
@@ -227,13 +227,13 @@ class AtomicAndNuclearPhysics:
         """Computes the binding energy of a nuclide given its mass in amu, atomic number, and
         neutron number"""
         m_n, m_1h = atomic_masses["n"], atomic_masses["1H"]
-        return (z * m_1h + n * m_n - m) * conversion_factors["MeV/amu"]
+        return (z * m_1h + n * m_n - m) * conversions.energy["MeV/amu"]
 
     def separation_energy(self, m_a_1: float, m_a: float) -> float:
         """Calculates the separation energy of the last neutron in nucleus ^{A}Z with the mass of
         the residual nucleus ^{A-1}Z in MeV"""
         m_n = atomic_masses["n"]
-        return (m_n + m_a_1 - m_a) * conversion_factors["MeV/amu"]
+        return (m_n + m_a_1 - m_a) * conversions.energy["MeV/amu"]
 
     def mass_equation(self, n: int, a: int, z: int) -> float:
         """Computes the mass of a nuclide with the liquid drop model mass equation in MeV"""

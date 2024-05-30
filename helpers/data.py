@@ -10,7 +10,7 @@ Notes:
 
 """
 
-from .conversions import conversion_factors
+from . import conversions
 
 
 constants = {
@@ -109,32 +109,32 @@ alpha_spectrum_226ra = {  # "MeV": %
 }
 
 half_lives = {  # seconds
-    "n": 12 * conversion_factors["s/min"],
-    "3H": 12.33 * conversion_factors["s/yr"],
-    "14C": 5736 * conversion_factors["s/yr"],
-    "60Co": 1925.28 * conversion_factors["s/day"],
-    "90Sr": 28.91 * conversion_factors["s/yr"],
-    "134Cs": 2.0652 * conversion_factors["s/yr"],
-    "135I": 6.7 * conversion_factors["s/hr"],
-    "135Xe": 9.17 * conversion_factors["s/hr"],
-    "137Cs": 30.08 * conversion_factors["s/yr"],
-    "143Pm": 53.1 * conversion_factors["s/hr"],
-    "214Bi": 19.71 * conversion_factors["s/min"],
-    "214Pb": 27.06 * conversion_factors["s/min"],
-    "214Po": 163.46 * conversion_factors["s/us"],
-    "218Po": 3.097 * conversion_factors["s/min"],
-    "222Rn": 3.8222 * conversion_factors["s/day"],
-    "226Ra": 1600 * conversion_factors["s/yr"],
-    "232Th": 1.41e10 * conversion_factors["s/yr"],
-    "233Th": 23.3 * conversion_factors["s/min"],
-    "233U": 1.592e5 * conversion_factors["s/yr"],
-    "234U": 2.46e5 * conversion_factors["s/yr"],
-    "235U": 7.038e8 * conversion_factors["s/yr"],
-    "236U": 2.34e7 * conversion_factors["s/yr"],
-    "238U": 4.68e9 * conversion_factors["s/yr"],
-    "239U": 23.5 * conversion_factors["s/min"],
-    "239Pu": 24110 * conversion_factors["s/yr"],
-    "240Pu": 6564 * conversion_factors["s/yr"],
-    "241Pu": 14.35 * conversion_factors["s/yr"],
-    "242Pu": 3.733e5 * conversion_factors["s/yr"],
+    "n": 12 * conversions.time["s/min"],
+    "3H": 12.33 * conversions.time["s/yr"],
+    "14C": 5736 * conversions.time["s/yr"],
+    "60Co": 1925.28 * conversions.time["s/day"],
+    "90Sr": 28.91 * conversions.time["s/yr"],
+    "134Cs": 2.0652 * conversions.time["s/yr"],
+    "135I": 6.7 * conversions.time["s/hr"],
+    "135Xe": 9.17 * conversions.time["s/hr"],
+    "137Cs": 30.08 * conversions.time["s/yr"],
+    "143Pm": 53.1 * conversions.time["s/hr"],
+    "214Bi": 19.71 * conversions.time["s/min"],
+    "214Pb": 27.06 * conversions.time["s/min"],
+    "214Po": 163.46 * conversions.time["s/us"],
+    "218Po": 3.097 * conversions.time["s/min"],
+    "222Rn": 3.8222 * conversions.time["s/day"],
+    "226Ra": 1600 * conversions.time["s/yr"],
+    "232Th": 1.41e10 * conversions.time["s/yr"],
+    "233Th": 23.3 * conversions.time["s/min"],
+    "233U": 1.592e5 * conversions.time["s/yr"],
+    "234U": 2.46e5 * conversions.time["s/yr"],
+    "235U": 7.038e8 * conversions.time["s/yr"],
+    "236U": 2.34e7 * conversions.time["s/yr"],
+    "238U": 4.68e9 * conversions.time["s/yr"],
+    "239U": 23.5 * conversions.time["s/min"],
+    "239Pu": 24110 * conversions.time["s/yr"],
+    "240Pu": 6564 * conversions.time["s/yr"],
+    "241Pu": 14.35 * conversions.time["s/yr"],
+    "242Pu": 3.733e5 * conversions.time["s/yr"],
 }

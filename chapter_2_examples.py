@@ -5,8 +5,8 @@ chapter_2_examples.py
 
 from math import exp, log
 from helpers.answer_types import SingleAnswer, MultiPartAnswer
+from helpers import conversions
 from helpers.data import constants, abundances, atomic_masses
-from helpers.conversions import conversion_factors, convert_temperature
 from helpers.chapter_formulae.chapter_2 import AtomicAndNuclearPhysics
 from helpers.answer_writer import AnswerWriter
 
@@ -37,7 +37,7 @@ class Chapter2Examples:
         e = (
             constants["m_e (kg)"]
             * constants["c (m/s)"] ** 2
-            / conversion_factors["J/MeV"]
+            / conversions.energy["J/MeV"]
         )
         return SingleAnswer(ans=e, units="MeV", sig_figs=4).format()
 
@@ -45,8 +45,8 @@ class Chapter2Examples:
         """Compute the energy equivalent of the atomic mass unit."""
         e = (
             self.example_2_3()[0]
-            * conversion_factors["g/amu"]
-            / conversion_factors["g/electron"]
+            * conversions.mass["g/amu"]
+            / conversions.mass["g/electron"]
         )
         return SingleAnswer(ans=e, units="MeV", sig_figs=4).format()
 
@@ -54,7 +54,7 @@ class Chapter2Examples:
         """A high-energy electron strikes a lead atom and ejects one of the K-electrons from the
         atom. What wavelength radiation is emitted when an outer electron drops into the vacancy?
         """
-        ionization_energy = 88e3 * conversion_factors["J/eV"]  # J
+        ionization_energy = 88e3 * conversions.energy["J/eV"]  # J
         lambda_ = self.formulae.photon_wavelength(ionization_energy)
         return SingleAnswer(ans=lambda_, units="m", sig_figs=3).format()
 
@@ -108,7 +108,7 @@ class Chapter2Examples:
         a, z = 107, 47
         n = a - z
         m_mev = self.formulae.mass_equation(n, a, z)
-        m_amu = m_mev / conversion_factors["MeV/amu"]
+        m_amu = m_mev / conversions.energy["MeV/amu"]
         return MultiPartAnswer(
             ans=[m_mev, m_amu], units=["MeV", "amu"], sig_figs=7
         ).format()
@@ -116,11 +116,11 @@ class Chapter2Examples:
     def example_2_11(self) -> MultiPartAnswer:
         """Calculate the most probable and average energies of air molecules in a New York City
         subway in the summer time at 38 degrees celsius"""
-        t = convert_temperature(38, units="C")
+        t = conversions.temperature(38, units="C")  # deg. F
         e_p = self.formulae.most_probable_energy(t)
-        e_p = e_p / conversion_factors["J/MeV"] * conversion_factors["eV/MeV"]
+        e_p = e_p / conversions.energy["J/MeV"] * conversions.energy["eV/MeV"]
         e_avg = self.formulae.maxwellian_average_energy(t)
-        e_avg = e_avg / conversion_factors["J/MeV"] * conversion_factors["eV/MeV"]
+        e_avg = e_avg / conversions.energy["J/MeV"] * conversions.energy["eV/MeV"]
         return MultiPartAnswer(ans=[e_p, e_avg], units="eV", sig_figs=3).format()
 
     def example_2_12(self) -> SingleAnswer:
