@@ -8,7 +8,7 @@ Method q_value_atomic_masses: Change input args to lists of reactants and produc
 
 from math import sqrt, exp, log, pi
 from typing import List
-from ..data import constants, atomic_weights
+from ..data import constants, atomic_masses
 from ..conversions import conversion_factors
 
 
@@ -22,6 +22,14 @@ class AtomicAndNuclearPhysics:
         n = len(gamma)
         total = sum(gamma[i] * m[i] for i in range(n))
         return total / 100
+
+    def abundance_natural(
+        self, gamma_i: List[float], m_i: List[float], gamma: float, m: float
+    ) -> float:
+        """Computes the abundance of a nuclide in the naturally occuring form of its element, given
+        the masses and abundances of all possibilities and the abundance and mass of the target
+        nuclide"""
+        return gamma * m / sum(gamma_i[j] * m_i[j] for j in range(len(gamma_i)))
 
     def nuclear_radius(self, a: float) -> float:
         """Computes a nucleus's radius in fm given its atomic mass number"""
@@ -118,6 +126,12 @@ class AtomicAndNuclearPhysics:
         """Calculates the activity at t if lambda is not known"""
         return alpha_0 * exp(-log(2) * t / half_life)
 
+    def activity_atom_density(self, lambda_: float, m: float, gamma: float) -> float:
+        """Computes the activity of an element given its decay constant, atomic weights, and
+        abundance"""
+        n_a = constants["N_A (1/(g-mol))"]
+        return lambda_ * n_a * gamma / m
+
     def half_life(self, lambda_: float) -> float:
         """Returns the half-life of an element given its decay constant"""
         return log(2) / lambda_
@@ -167,12 +181,6 @@ class AtomicAndNuclearPhysics:
             lambda_b - lambda_a
         ) * (exp(-lambda_a * t) - exp(-lambda_b * t))
 
-    def q_value_atomic_masses(
-        self, m_a: float, m_b: float, m_c: float, m_d: float
-    ) -> float:
-        """Computes the q value with atomic masses only in MeV"""
-        return ((m_a + m_b) - (m_c + m_d)) * conversion_factors["MeV/amu"]
-
     def q_value(
         self,
         m_a: float,
@@ -191,9 +199,15 @@ class AtomicAndNuclearPhysics:
             - ((m_c + z_c * m_e) + (m_d + z_d * m_e))
         ) * conversion_factors["MeV/amu"]
 
+    def q_value_atomic_masses(
+        self, m_a: float, m_b: float, m_c: float, m_d: float
+    ) -> float:
+        """Computes the q value with atomic masses in MeV"""
+        return ((m_a + m_b) - (m_c + m_d)) * conversion_factors["MeV/amu"]
+
     def mass_defect(self, z: int, n: int, m: int) -> float:
         """Computes the mass defect of a nucleus"""
-        m_h, m_n = atomic_weights["1H"], atomic_weights["n"]
+        m_h, m_n = atomic_masses["1H"], atomic_masses["n"]
         return z * m_h + n * m_n - m
 
     def q_value_binding(
@@ -202,10 +216,23 @@ class AtomicAndNuclearPhysics:
         """Computes the Q value with binding energies"""
         return (be_c + be_d) - (be_a - be_b)
 
+    def q_value_mass_defects(
+        self, d_a: float, d_b: float, d_c: float, d_d: float
+    ) -> float:
+        """Obtains the Q value of a reaction given the mass defects of the reactants and products
+        in MeV"""
+        return (d_a + d_b) - (d_c + d_d)
+
+    def binding_energy(self, m: float, z: int, n: int) -> float:
+        """Computes the binding energy of a nuclide given its mass in amu, atomic number, and
+        neutron number"""
+        m_n, m_1h = atomic_masses["n"], atomic_masses["1H"]
+        return (z * m_1h + n * m_n - m) * conversion_factors["MeV/amu"]
+
     def separation_energy(self, m_a_1: float, m_a: float) -> float:
         """Calculates the separation energy of the last neutron in nucleus ^{A}Z with the mass of
         the residual nucleus ^{A-1}Z in MeV"""
-        m_n = atomic_weights["n"]
+        m_n = atomic_masses["n"]
         return (m_n + m_a_1 - m_a) * conversion_factors["MeV/amu"]
 
     def mass_equation(self, n: int, a: int, z: int) -> float:
@@ -220,17 +247,48 @@ class AtomicAndNuclearPhysics:
             constants["delta (MeV)"],
         )
         if (n % 2 != 0 and z % 2 == 0) or (n % 2 == 0 and z % 2 != 0):
-            delta = 0
-        if n % 2 == 0 and z % 2 == 0:
-            delta = -delta
+            delta_term = 0
+        elif n == 1 and z == 1:
+            delta_term = 0
+        elif n % 2 == 0 and z % 2 == 0:
+            delta_term = -delta
+        else:
+            delta_term = delta
         return (
             n * m_n
             + z * m_p
             - alpha * a
-            + beta * pow(a, 2 / 3)
-            + gamma * (z**2 / pow(a, 1 / 3))
+            + beta * a ** (2 / 3)
+            + gamma * z**2 / a ** (1 / 3)
             + zeta * ((a - 2 * z) ** 2) / a
-            + delta
+            + delta_term
+        )
+
+    def binding_energy_mass_eqn(self, n: int, a: int, z: int) -> float:
+        """Computes an approximation of the total binding energy using the last five terms of the
+        mass equation, given the neutron number, atomic mass number, and atomic number
+        """
+        alpha, beta, gamma, zeta, delta = (
+            constants["alpha (MeV)"],
+            constants["beta (MeV)"],
+            constants["gamma (MeV)"],
+            constants["zeta (MeV)"],
+            constants["delta (MeV)"],
+        )
+        if (n % 2 != 0 and z % 2 == 0) or (n % 2 == 0 and z % 2 != 0):
+            delta_term = 0
+        elif n == 1 and z == 1:
+            delta_term = 0
+        elif n % 2 == 0 and z % 2 == 0:
+            delta_term = -delta
+        else:
+            delta_term = delta
+        return -(
+            -alpha * a
+            + beta * a ** (2 / 3)
+            + gamma * z**2 / a ** (1 / 3)
+            + zeta * ((a - 2 * z) ** 2) / a
+            + delta_term
         )
 
     def maxwellian_energy_dist(self, n: float, t: float, e: float) -> float:

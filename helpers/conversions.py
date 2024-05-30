@@ -1,6 +1,9 @@
 """
 conversions.py
 
+Notes:
+- The L/mol conversion factor is only applicable to an ideal gas
+
 """
 
 conversion_factors = {
@@ -12,6 +15,16 @@ conversion_factors = {
     "eV/MeV": 1e6,
     "Btu/J": 9.418e-4,
     "J/kWh": 3.6e6,
+    "(disintegrations/s)/Ci": 3.7e10,
+    "L/mol": 22.4,
+    "mL/L": 1e3,
+    "Pa/atm": 101325,
+    "s/us": 1e-6,
+    "s/min": 60,
+    "s/hr": 3600,
+    "s/day": 24 * 3600,
+    "s/mo": 2.629746e6,
+    "s/yr": 365 * 24 * 3600,
 }
 
 
