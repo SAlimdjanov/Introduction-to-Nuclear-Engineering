@@ -8,8 +8,7 @@ Method q_value_atomic_masses: Change input args to lists of reactants and produc
 
 from math import sqrt, exp, log, pi
 from typing import List
-from .. import conversions
-from ..data import constants, atomic_masses
+from .. import conversions, data
 
 
 class AtomicAndNuclearPhysics:
@@ -37,19 +36,19 @@ class AtomicAndNuclearPhysics:
 
     def rest_energy(self, m_0: float) -> float:
         """Computes the rest energy of a particle given its rest mass"""
-        return m_0 * constants["c (m/s)"] ** 2
+        return m_0 * data.constants["c (m/s)"] ** 2
 
     def relative_mass(self, m_0: float, v: float) -> float:
         """Calculates the relative mass of a moving particle"""
-        return m_0 / sqrt(1 - v**2 / constants["c (m/s)"] ** 2)
+        return m_0 / sqrt(1 - v**2 / data.constants["c (m/s)"] ** 2)
 
     def total_energy(self, m: float) -> float:
         """Calculates the total energy of a particle given its relative mass"""
-        return m * constants["c (m/s)"] ** 2
+        return m * data.constants["c (m/s)"] ** 2
 
     def kinetic_energy_rel(self, m_0: float, v: float) -> float:
         """Computes a particle's kinetic energy given its rest mass and speed"""
-        return (self.relative_mass(m_0, v) - m_0) * constants["c (m/s)"] ** 2
+        return (self.relative_mass(m_0, v) - m_0) * data.constants["c (m/s)"] ** 2
 
     def kinetic_energy(self, m_0: float, v: float) -> float:
         """Calculates a particle's non-relativistic kinetic energy"""
@@ -58,7 +57,7 @@ class AtomicAndNuclearPhysics:
     def particle_speed(self, e_t: float, e_r: float) -> float:
         """Computes the speed of any particle, relativistic or nonrelativistic, given its total
         energy and rest energy"""
-        c = constants["c (m/s)"]
+        c = data.constants["c (m/s)"]
         return c * sqrt(1 - e_r**2 / e_t**2)
 
     def neutron_speed(self, e: float) -> float:
@@ -68,29 +67,33 @@ class AtomicAndNuclearPhysics:
     def photon_energy(self, nu: float) -> float:
         """Obtains a photon's energy given its frequency. Second arg selects the units of Planck's
         constant. Can choose 'J-s' or 'eV-s'"""
-        h = constants["h (J-s)"]
+        h = data.constants["h (J-s)"]
         return h * nu
 
     def photon_wavelength(self, e: float) -> float:
         """Calculates a photon's wavelength given its energy"""
-        h, c = constants["h (J-s)"], constants["c (m/s)"]
+        h, c = data.constants["h (J-s)"], data.constants["c (m/s)"]
         return h * c / e
 
     def wavelength(self, p: float) -> float:
         """Computes a particle's wavelength given its momentum"""
-        h = constants["h (J-s)"]
+        h = data.constants["h (J-s)"]
         return h / p
 
     def wavelength_nonrel(self, m_0: float, e: float) -> float:
         """Calculates a particle's non-relativistic wavelength given its rest mass and kinetic
         energy"""
-        h = constants["h (J-s)"]
+        h = data.constants["h (J-s)"]
         return h / sqrt(2 * m_0 * e)
 
     def wavelength_w_compton(self, e_t: float, e_r: float) -> float:
         """Computes a particle's relativistic wavelength given its total energy and rest energy,
         in relation to the Compton wavelength"""
-        m_e, h, c = constants["m_e (kg)"], constants["h (J-s)"], constants["c (m/s)"]
+        m_e, h, c = (
+            data.constants["m_e (kg)"],
+            data.constants["h (J-s)"],
+            data.constants["c (m/s)"],
+        )
         lambda_c = h / (m_e * c)
         return lambda_c * m_e * c**2 / sqrt(e_t**2 - e_r**2)
 
@@ -101,13 +104,13 @@ class AtomicAndNuclearPhysics:
     def momentum_rel(self, e_t: float, e_r: float) -> float:
         """Computes the relativistic momentum of a particle given its total energy and rest
         energy"""
-        return sqrt(e_t**2 - e_r**2) / constants["c (m/s)"]
+        return sqrt(e_t**2 - e_r**2) / data.constants["c (m/s)"]
 
     def wavelength_rel(self, e_t: float, e_r: float) -> float:
         """Computes the relativistic wavelength of a particle given its total energy and rest
         energy"""
-        h = constants["h (J-s)"]
-        return h * constants["c (m/s)"] / sqrt(e_t - e_r)
+        h = data.constants["h (J-s)"]
+        return h * data.constants["c (m/s)"] / sqrt(e_t - e_r)
 
     def decay_constant(self, half_life: float) -> float:
         """Obtains decay constant given an element's half-life"""
@@ -129,7 +132,7 @@ class AtomicAndNuclearPhysics:
     def activity_atom_density(self, lambda_: float, m: float, gamma: float) -> float:
         """Computes the activity of an element given its decay constant, atomic weights, and
         abundance"""
-        n_a = constants["N_A (1/(g-mol))"]
+        n_a = data.constants["N_A (1/(g-mol))"]
         return lambda_ * n_a * gamma / m
 
     def half_life(self, lambda_: float) -> float:
@@ -193,7 +196,7 @@ class AtomicAndNuclearPhysics:
         z_d: int,
     ) -> float:
         """Computes the q value with atomic masses and atomic numbers in MeV"""
-        m_e = constants["m_e (MeV)"]
+        m_e = data.constants["m_e (MeV)"]
         return (
             ((m_a + z_a * m_e) + (m_b + z_b * m_e))
             - ((m_c + z_c * m_e) + (m_d + z_d * m_e))
@@ -207,7 +210,7 @@ class AtomicAndNuclearPhysics:
 
     def mass_defect(self, z: int, n: int, m: int) -> float:
         """Computes the mass defect of a nucleus"""
-        m_h, m_n = atomic_masses["1H"], atomic_masses["n"]
+        m_h, m_n = data.atomic_masses["1H"], data.atomic_masses["n"]
         return z * m_h + n * m_n - m
 
     def q_value_binding(
@@ -226,25 +229,25 @@ class AtomicAndNuclearPhysics:
     def binding_energy(self, m: float, z: int, n: int) -> float:
         """Computes the binding energy of a nuclide given its mass in amu, atomic number, and
         neutron number"""
-        m_n, m_1h = atomic_masses["n"], atomic_masses["1H"]
+        m_n, m_1h = data.atomic_masses["n"], data.atomic_masses["1H"]
         return (z * m_1h + n * m_n - m) * conversions.energy["MeV/amu"]
 
     def separation_energy(self, m_a_1: float, m_a: float) -> float:
         """Calculates the separation energy of the last neutron in nucleus ^{A}Z with the mass of
         the residual nucleus ^{A-1}Z in MeV"""
-        m_n = atomic_masses["n"]
+        m_n = data.atomic_masses["n"]
         return (m_n + m_a_1 - m_a) * conversions.energy["MeV/amu"]
 
     def mass_equation(self, n: int, a: int, z: int) -> float:
         """Computes the mass of a nuclide with the liquid drop model mass equation in MeV"""
         m_n, m_p, alpha, beta, gamma, zeta, delta = (
-            constants["m_n (MeV)"],
-            constants["m_p (MeV)"],
-            constants["alpha (MeV)"],
-            constants["beta (MeV)"],
-            constants["gamma (MeV)"],
-            constants["zeta (MeV)"],
-            constants["delta (MeV)"],
+            data.constants["m_n (MeV)"],
+            data.constants["m_p (MeV)"],
+            data.constants["alpha (MeV)"],
+            data.constants["beta (MeV)"],
+            data.constants["gamma (MeV)"],
+            data.constants["zeta (MeV)"],
+            data.constants["delta (MeV)"],
         )
         if (n % 2 != 0 and z % 2 == 0) or (n % 2 == 0 and z % 2 != 0):
             delta_term = 0
@@ -269,11 +272,11 @@ class AtomicAndNuclearPhysics:
         mass equation, given the neutron number, atomic mass number, and atomic number
         """
         alpha, beta, gamma, zeta, delta = (
-            constants["alpha (MeV)"],
-            constants["beta (MeV)"],
-            constants["gamma (MeV)"],
-            constants["zeta (MeV)"],
-            constants["delta (MeV)"],
+            data.constants["alpha (MeV)"],
+            data.constants["beta (MeV)"],
+            data.constants["gamma (MeV)"],
+            data.constants["zeta (MeV)"],
+            data.constants["delta (MeV)"],
         )
         if (n % 2 != 0 and z % 2 == 0) or (n % 2 == 0 and z % 2 != 0):
             delta_term = 0
@@ -294,12 +297,12 @@ class AtomicAndNuclearPhysics:
     def maxwellian_energy_dist(self, n: float, t: float, e: float) -> float:
         """Computes the density of particles per unit energy, N(E) given the number of particles
         N, temperature T, and energy E."""
-        k = constants["k_B (J/K)"]
+        k = data.constants["k_B (J/K)"]
         return 2 * pi * n / pow(pi * k * t, 3 / 2) * sqrt(e) * exp(-e / (k * t))
 
     def most_probable_energy(self, t: float) -> float:
         """Returns the most probable energy in a Maxwellian distribution at a given temperature"""
-        k = constants["k_B (J/K)"]
+        k = data.constants["k_B (J/K)"]
         return k * t / 2
 
     def maxwellian_average_energy(self, t: float) -> float:
@@ -310,19 +313,19 @@ class AtomicAndNuclearPhysics:
     def ideal_gas_pressure(self, n: float, t: float) -> float:
         """Computes the pressure of a gas using the ideal gas law, given its density (atoms/m^3)
         and temperature"""
-        k = constants["k_B (J/K)"]
+        k = data.constants["k_B (J/K)"]
         return n * k * t
 
     def atom_density(self, rho: float, m: float) -> float:
         """Returns the atom density of an element given its physical density and gram atomic
         weight"""
-        n_a = constants["N_A (1/(g-mol))"]
+        n_a = data.constants["N_A (1/(g-mol))"]
         return rho * n_a / m
 
     def atom_density_isotope(self, gamma: float, rho: float, m: float) -> float:
         """Calculates the atom density of an isotope given its abundance, physical density and
         atomic weight"""
-        n_a = constants["N_A (1/(g-mol))"]
+        n_a = data.constants["N_A (1/(g-mol))"]
         return gamma * rho * n_a / (m * 100)
 
     def average_density_component(self, w: float, rho: float) -> float:
@@ -333,7 +336,7 @@ class AtomicAndNuclearPhysics:
     def atom_density_component(self, w: float, rho: float, m: float) -> float:
         """Calculates the atom density of a component given its weight percent, physical
         density and atomic weight"""
-        n_a = constants["N_A (1/(g-mol))"]
+        n_a = data.constants["N_A (1/(g-mol))"]
         return w * rho * n_a / (m * 100)
 
     def weight_percent(self, x: float, m: int, y: float, n: int) -> float:

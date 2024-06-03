@@ -5,8 +5,7 @@ chapter_2_examples.py
 
 from math import exp, log
 from helpers.answer_types import SingleAnswer, MultiPartAnswer
-from helpers import conversions
-from helpers.data import constants, abundances, atomic_masses
+from helpers import conversions, data
 from helpers.chapter_formulae.chapter_2 import AtomicAndNuclearPhysics
 from helpers.answer_writer import AnswerWriter
 
@@ -20,23 +19,27 @@ class Chapter2Examples:
     def example_2_1(self) -> SingleAnswer:
         """A glass of water is known to contain 6.6 * 10^24 atoms of hydrogen. How
         many atoms of deuterium 2H are present?"""
-        fraction = abundances["2H"] / 100
+        fraction = data.abundances["2H"] / 100
         n_h = 6.6e24
         n_atoms = fraction * n_h
         return SingleAnswer(ans=n_atoms, units="atoms", sig_figs=2).format()
 
     def example_2_2(self) -> SingleAnswer:
         """Calculate the atomic weight of naturally occuring oxygen"""
-        gamma = [abundances["16O"], abundances["17O"], abundances["18O"]]
-        m = [atomic_masses["16O"], atomic_masses["17O"], atomic_masses["18O"]]
+        gamma = [data.abundances["16O"], data.abundances["17O"], data.abundances["18O"]]
+        m = [
+            data.atomic_masses["16O"],
+            data.atomic_masses["17O"],
+            data.atomic_masses["18O"],
+        ]
         m_avg = self.formulae.average_atomic_weight(gamma, m)
         return SingleAnswer(ans=m_avg, units=None, sig_figs=6).format()
 
     def example_2_3(self) -> SingleAnswer:
         """Calculate the rest-mass energy of the electron in MeV."""
         e = (
-            constants["m_e (kg)"]
-            * constants["c (m/s)"] ** 2
+            data.constants["m_e (kg)"]
+            * data.constants["c (m/s)"] ** 2
             / conversions.energy["J/MeV"]
         )
         return SingleAnswer(ans=e, units="MeV", sig_figs=4).format()
@@ -87,10 +90,10 @@ class Chapter2Examples:
         # Add 1 since the deutrons are have energy of 1 MeV
         q = (
             self.formulae.q_value_atomic_masses(
-                atomic_masses["3H"],
-                atomic_masses["2H"],
-                atomic_masses["4He"],
-                atomic_masses["n"],
+                data.atomic_masses["3H"],
+                data.atomic_masses["2H"],
+                data.atomic_masses["4He"],
+                data.atomic_masses["n"],
             )
             + 1
         )
@@ -99,7 +102,7 @@ class Chapter2Examples:
     def example_2_9(self) -> SingleAnswer:
         """Calculate the binding energy of the last neutron in 13C."""
         # The residual nucleus is 12C, therefore:
-        m_a_1, m_a = atomic_masses["12C"], atomic_masses["13C"]
+        m_a_1, m_a = data.atomic_masses["12C"], data.atomic_masses["13C"]
         e_s = self.formulae.separation_energy(m_a_1, m_a)
         return SingleAnswer(ans=e_s, units="MeV", sig_figs=3).format()
 
@@ -125,14 +128,14 @@ class Chapter2Examples:
 
     def example_2_12(self) -> SingleAnswer:
         """The density of sodium is 0.97 g/cm^3. Calculate its atom density"""
-        rho, m = 0.97, atomic_masses["Na"]
+        rho, m = 0.97, data.atomic_masses["Na"]
         n = self.formulae.atom_density(rho, m)
         return SingleAnswer(ans=n, units="atoms/cm^3", sig_figs=3).format()
 
     def example_2_13(self) -> str:
         """The density of a NaCl crystal is 2.17 g/cm^3. Compute the atom densities of Na and Cl."""
         # Since there is one Na atom and one Cl atom in a pseudo molecule, add the weights:
-        m = atomic_masses["Na"] + atomic_masses["Cl"]
+        m = data.atomic_masses["Na"] + data.atomic_masses["Cl"]
         rho = 2.17
         n = self.formulae.atom_density(rho, m)
         return f"{n:.3g} atoms/cm^3 for both since there is one atom of each per pseudomolecule"
@@ -143,14 +146,14 @@ class Chapter2Examples:
         (b) the atom densities of hydrogen and oxygen
         (c) the atom density of 2H"""
         # a)
-        m = 2 * atomic_masses["H"] + atomic_masses["O"]
+        m = 2 * data.atomic_masses["H"] + data.atomic_masses["O"]
         rho = 1
         n_h2o = self.formulae.atom_density(rho, m)
         # b) Multiply result of part a) by 2 for hydrogen, oxygen stays the same.
         n_h = n_h2o * 2
         n_o = n_h2o
         # c)
-        gamma = abundances["2H"]
+        gamma = data.abundances["2H"]
         n_2h = gamma * n_h / 100
         return MultiPartAnswer(
             ans=[n_h2o, n_h, n_o, n_2h],
@@ -164,7 +167,7 @@ class Chapter2Examples:
         (a) How much 235U is in the reactor?
         (b) What are the atom densities of 235U and 238U in the rods?"""
         m_total, rho = 1500, 19.1
-        m_235u, m_238u = atomic_masses["235U"], atomic_masses["238U"]
+        m_235u, m_238u = data.atomic_masses["235U"], data.atomic_masses["238U"]
         # a) Enrichment to 20% w/o means 20% of the uranium in the reactor is 235U
         wp_235u, wp_238u = 20, 80
         mass_235u = 0.2 * m_total
@@ -183,11 +186,11 @@ class Chapter2Examples:
         the 235U in the fuel?"""
         rho = 10.5
         wp_235u, wp_238u = 30, 70
-        m_235u, m_238u = atomic_masses["235U"], atomic_masses["238U"]
+        m_235u, m_238u = data.atomic_masses["235U"], data.atomic_masses["238U"]
         m_u = self.formulae.atom_density_weight_percent(
             [wp_235u, wp_238u], [m_235u, m_238u]
         )
-        m_o = atomic_masses["O"]
+        m_o = data.atomic_masses["O"]
         wp_u = self.formulae.weight_percent(m_u, 1, m_o, 2)
         rho_avg_u = wp_u * rho / 100
         rho_235u = wp_235u * rho_avg_u / 100
