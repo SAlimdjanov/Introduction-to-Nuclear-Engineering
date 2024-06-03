@@ -119,11 +119,11 @@ class Chapter2Examples:
     def example_2_11(self) -> MultiPartAnswer:
         """Calculate the most probable and average energies of air molecules in a New York City
         subway in the summer time at 38 degrees celsius"""
-        t = conversions.temperature(38, units="C")  # deg. F
+        t = conversions.temperature(38, input_units="C", output_units="K")
         e_p = self.formulae.most_probable_energy(t)
-        e_p = e_p / conversions.energy["J/MeV"] * conversions.energy["eV/MeV"]
+        e_p = e_p / conversions.energy["J/MeV"] * conversions.unit_prefixes["M"]
         e_avg = self.formulae.maxwellian_average_energy(t)
-        e_avg = e_avg / conversions.energy["J/MeV"] * conversions.energy["eV/MeV"]
+        e_avg = e_avg / conversions.energy["J/MeV"] * conversions.unit_prefixes["M"]
         return MultiPartAnswer(ans=[e_p, e_avg], units="eV", sig_figs=3).format()
 
     def example_2_12(self) -> SingleAnswer:

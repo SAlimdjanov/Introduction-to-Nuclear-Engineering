@@ -4,13 +4,13 @@ conversions.py
 Notes:
 - The L/mol conversion factor is only applicable to an ideal gas
 - Bq/Ci is equivalent to (disintegrations/s)/Ci
+- Unit prefixes are included for easy conversions.
 
 """
 
 energy = {
     "J/eV": 1.6022e-19,
     "J/MeV": 1.6022e-13,
-    "eV/MeV": 1e6,
     "Btu/J": 9.418e-4,
     "J/kWh": 3.6e6,
     "MeV/amu": 931.502,
@@ -19,28 +19,23 @@ energy = {
 mass = {
     "g/amu": 1.6606e-24,
     "g/electron": 9.1095e-28,
-    "g/kg": 1000,
+}
+
+area = {
+    "b/cm^2": 1e24,
 }
 
 volume = {
     "L/mol": 22.4,
-    "mL/L": 1e3,
     "cm^3/m^3": 1e6,
 }
 
 time = {
-    "s/us": 1e-6,
     "s/min": 60,
     "s/hr": 3600,
     "s/day": 24 * 3600,
     "s/mo": 2.629746e6,
     "s/yr": 365 * 24 * 3600,
-}
-
-length = {
-    "m/fm": 1e-15,
-    "m/km": 1000,
-    "m/um": 1e-6,
 }
 
 pressure = {
@@ -52,11 +47,40 @@ activity = {
     "Bq/Ci": 3.7e10,
 }
 
+unit_prefixes = {
+    "P": 1e15,
+    "T": 1e12,
+    "G": 1e9,
+    "M": 1e6,
+    "k": 1e3,
+    "c": 1e-2,
+    "m": 1e-3,
+    "mu": 1e-6,
+    "n": 1e-9,
+    "p": 1e-12,
+    "f": 1e-15,
+}
 
-def temperature(t: float, units="C") -> float:
-    """Convert temperature to and from degrees Celsius and degrees kelvin. Kwarg corresponds to the
-    input unit of temperature"""
-    if units not in ("C", "K"):
-        raise ValueError("Units must be 'C' (Celsius) or 'K' (Kelvin)")
-    diff = 273.15
-    return t + diff if units == "C" else t - diff
+
+def temperature(t: float, input_units="K", output_units="C") -> float:
+    """Converts an inpit temperature to degrees Celsius, Kelvin, or Fahrenheit"""
+    units = input_units, output_units
+    # Convert the input temperature to Celsius as an intermediate step
+    match units:
+        case "C", "K":
+            temp = t + 273.15
+        case "K", "C":
+            temp = t - 273.15
+        case "C", "F":
+            temp = (t * 9 / 5) + 32
+        case "F", "C":
+            temp = (t - 32) * 5 / 9
+        case "F", "K":
+            temp = (t - 32) * 5 / 9 + 273.15
+        case "K", "F":
+            temp = (t - 273.15) * 9 / 5 + 32
+        case _:
+            raise ValueError(
+                "Units must be 'C' (Celsius), 'K' (Kelvin), or 'F' (Fahrenheit)"
+            )
+    return temp

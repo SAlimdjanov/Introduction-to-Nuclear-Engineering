@@ -301,7 +301,8 @@ class AtomicAndNuclearPhysics:
         return 2 * pi * n / pow(pi * k * t, 3 / 2) * sqrt(e) * exp(-e / (k * t))
 
     def most_probable_energy(self, t: float) -> float:
-        """Returns the most probable energy in a Maxwellian distribution at a given temperature"""
+        """Returns the most probable energy in a Maxwellian distribution at a given temperature in
+        degrees Kelvin"""
         k = data.constants["k_B (J/K)"]
         return k * t / 2
 

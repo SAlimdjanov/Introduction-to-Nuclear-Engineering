@@ -129,7 +129,7 @@ class Chapter2Problems:
         """Calculate the mass of a proton in amu"""
         m_p = (
             data.constants["m_p (kg)"]
-            * conversions.mass["g/kg"]
+            * conversions.unit_prefixes["k"]
             / conversions.mass["g/amu"]
         )
         return SingleAnswer(ans=m_p, units="amu", sig_figs=5).format()
@@ -154,7 +154,7 @@ class Chapter2Problems:
         # The empirical atomic radius of uranium is 175 pm
         r = 175e-12  # m
         a = 238
-        r_238u = self.formulae.nuclear_radius(a) * conversions.length["m/fm"]  # m
+        r_238u = self.formulae.nuclear_radius(a) * conversions.unit_prefixes["f"]  # m
         # Fraction involves dividing the volume, simplified to:
         fraction = (r_238u / r) ** 3
         return f"{fraction * 100:.4g} %"
@@ -171,7 +171,7 @@ class Chapter2Problems:
         # The density in g/cm^3:
         rho_g = nucleon_mass * nucleon_density
         # In kg/m^3:
-        rho_kg = rho_g / conversions.mass["g/kg"]
+        rho_kg = rho_g / conversions.unit_prefixes["k"]
         return MultiPartAnswer(
             ans=[rho_g, rho_kg], units=["g/cm^3", "kg/m^3"], sig_figs=3
         ).format()
@@ -334,10 +334,10 @@ class Chapter2Problems:
         m_h, m_12c = (  # Masses of H and 12C in kg
             data.atomic_masses["H"]
             * conversions.mass["g/amu"]
-            / conversions.mass["g/kg"],
+            / conversions.unit_prefixes["k"],
             data.atomic_masses["12C"]
             * conversions.mass["g/amu"]
-            / conversions.mass["g/kg"],
+            / conversions.unit_prefixes["k"],
         )
         c = data.constants["c (m/s)"]
         e_gamma_h = e_h * (1 - e_h / (2 * m_h * c**2))
@@ -491,13 +491,15 @@ class Chapter2Problems:
             conversions.activity["Bq/Ci"],
         )
         # The power emitted per curie is:
-        p = e * d * conversions.energy["J/MeV"] / conversions.energy["eV/MeV"]  # eV/Ci
+        p = (
+            e * d * conversions.energy["J/MeV"] / conversions.unit_prefixes["M"]
+        )  # eV/Ci
         # To produce 1 MW, the desired activity is:
         alpha = 1e6 / p * d
         # Since alpha = lambda * N = lambda * m * N_A / M
         lambda_ = self.formulae.decay_constant(t)
         m = alpha * 210 / (lambda_ * n_a)
-        m /= conversions.mass["g/kg"]
+        m /= conversions.unit_prefixes["k"]
         return SingleAnswer(ans=m, units="kg", sig_figs=4).format()
 
     def problem_2_36(self) -> MultiPartAnswer:
@@ -522,7 +524,7 @@ class Chapter2Problems:
             / (
                 rho
                 * conversions.volume["L/mol"]
-                * conversions.volume["mL/L"]
+                / conversions.unit_prefixes["m"]
                 * conversions.activity["Bq/Ci"]
                 * eff
             )
@@ -612,7 +614,7 @@ class Chapter2Problems:
         """
         # Since 1 mL = 1 cm^3, the activity can be represented as:
         alpha = (
-            3e-12 / conversions.volume["mL/L"] * conversions.activity["Bq/Ci"]
+            3e-12 * conversions.unit_prefixes["m"] * conversions.activity["Bq/Ci"]
         )  # (disintegrations/s)/cm^3
         # The short-lived daughters are 218Po, 214Pb, 214Bi, and 214Po based on the decay chain.
         t_218po, t_214po = data.half_lives["218Po"], data.half_lives["214Po"]
