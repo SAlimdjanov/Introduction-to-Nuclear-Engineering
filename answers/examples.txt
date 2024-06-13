@@ -15,3 +15,21 @@ Example 2.14: 3.343e+22 molecules/cm^3, 6.686e+22 atoms/cm^3, 3.343e+22 atoms/cm
 Example 2.15: 3e+02 kg, 9.79e+21 atoms/cm^3, 3.87e+22 atoms/cm^3
 Example 2.16: 7.11e+21 atoms/cm^3
 
+Example 3.1: 5.21e+05 interactions/s, 1.04 %
+Example 3.2: 85.5 %
+Example 3.3: 0.209 cm^-1, 1.04e+08 collisions/(cm^3-s)
+Example 3.4: 11.6 cm
+Example 3.5: 0.367 cm^-1
+Example 3.6: 14.0 b, 1.03e+02 b
+Example 3.7: 2.05 MW
+Example 3.8: 6.18e-13 cm
+Example 3.9: 0.0528 b
+Example 3.10: 0.738 MeV, 0.262 MeV, 0.303
+Example 3.11: 4.27e+13 neutrons/cm^3
+Example 3.12: 8.1e+05 Ci
+Example 3.13: 1.332
+Example 3.14: 2.88e+03 kg, 2.01e+03 kg
+Example 3.15: 0.0743 g/cm^2, 1.35 cm
+Example 3.16: 6.58e+09 MeV/(g-s)
+Example 3.17: 0.618 cm
+
