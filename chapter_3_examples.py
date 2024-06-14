@@ -1,20 +1,21 @@
 """
-chapter_2_examples.py
+chapter_3_examples.py
 
 """
 
 import math
 from helpers.answer_types import SingleAnswer, MultiPartAnswer
 from helpers import conversions, data
-from helpers.chapter_formulae.chapter_3 import RadiationMatterInteraction
+from helpers.formulae import Formulae
 from helpers.answer_writer import AnswerWriter
+
+formulae = Formulae()
 
 
 class Chapter3Examples:
     """Solutions of Chapter 3 example problems"""
 
     type_and_chapter = ("Example", 3)
-    formulae = RadiationMatterInteraction()
 
     def example_3_1(self) -> MultiPartAnswer:
         """A beam of 1-MeV neutrons of intensity 5 * 10^8 neutrons/(cm^2-s) strikes a thin 12C
@@ -24,7 +25,7 @@ class Chapter3Examples:
         (b) What is the probability that a neutron in the beam will have a collision in the target?
         """
         sigma_t = 2.6 / conversions.area["b/cm^2"]
-        collisions = self.formulae.se_energy_beam_collisions(
+        collisions = formulae.ch3.se_energy_beam_collisions(
             sigma=sigma_t, i=5e8, n=data.atom_densities["C"], a=0.1, x=0.05
         )  # interactions/s
         neutron_strikes = 5e8 * 0.1  # neutrons/s
@@ -51,8 +52,8 @@ class Chapter3Examples:
         (b) collision density in the target."""
         sigma_t = 2.6 / conversions.area["b/cm^2"]
         n, i = data.atom_densities["C"], 5e8
-        sigma_macro_t = self.formulae.macroscopic_cross_section(n, sigma_t)
-        f = self.formulae.collision_density(i, n, sigma_t)
+        sigma_macro_t = formulae.ch3.macroscopic_cross_section(n, sigma_t)
+        f = formulae.ch3.collision_density(i, n, sigma_t)
         return MultiPartAnswer(
             ans=[sigma_macro_t, f], units=["cm^-1", "collisions/(cm^3-s)"], sig_figs=3
         ).format()
@@ -61,8 +62,8 @@ class Chapter3Examples:
         """Calculate the mean free path of 100-keV neutrons in liquid sodium. At this energy, the
         total cross-section of sodium is 3.4 b."""
         sigma_t, n = 3.4 / conversions.area["b/cm^2"], data.atom_densities["Na"]
-        sigma_macro_t = self.formulae.macroscopic_cross_section(n, sigma_t)
-        lambda_ = self.formulae.mean_free_path(sigma_macro_t)
+        sigma_macro_t = formulae.ch3.macroscopic_cross_section(n, sigma_t)
+        lambda_ = formulae.ch3.mean_free_path(sigma_macro_t)
         return SingleAnswer(ans=lambda_, units="cm", sig_figs=3).format()
 
     def example_3_5(self) -> SingleAnswer:
@@ -75,7 +76,7 @@ class Chapter3Examples:
         )
         # From Chapter 2, the atom densities are:
         n_235u, n_238u = 3.48e20, 4.83e22
-        sigma_macro = self.formulae.macroscopic_cross_section_mixture(
+        sigma_macro = formulae.ch3.macroscopic_cross_section_mixture(
             n_235u, sigma_235u, n_238u, sigma_238u
         )
         return SingleAnswer(ans=sigma_macro, units="cm^-1", sig_figs=3).format()
@@ -89,7 +90,7 @@ class Chapter3Examples:
          O |   8   |     4     |
         What are the values of as for the water molecule at these energies?"""
         # At 1 MeV, one gets:
-        macro_sigma_1 = self.formulae.molecule_cross_section(
+        macro_sigma_1 = formulae.ch3.molecule_cross_section(
             m=2, sigma_m=3, n=1, sigma_n=8
         )
         # This equation does not hold at 0.0253 eV, and the experimental value is 103
@@ -107,7 +108,7 @@ class Chapter3Examples:
         # Computing the power rate
         power_rate = energy * conversions.energy["J/MeV"] * 1e-6  # MW/(fission/s)
         # The fission rate is:
-        f = self.formulae.collision_density_flux(sigma_macro_f, phi)
+        f = formulae.ch3.collision_density_flux(sigma_macro_f, phi)
         # Power density
         pd = power_rate * f  # MW/cm^3
         # The total power is the power density multiplied by the reactor volume
@@ -140,13 +141,11 @@ class Chapter3Examples:
         """
         theta, a, e_i = 45 / conversions.angle["deg/rad"], 2, 1
         # a)
-        e_s = self.formulae.energy_after_collision(e_i, a, theta)
+        e_s = formulae.ch3.energy_after_collision(e_i, a, theta)
         # b) Recoil energy is the initial energy minus the scattering energy
         e_r = e_i - e_s
         # c)
-        delta_u = abs(
-            self.formulae.lethargy(e_i, e_i) - self.formulae.lethargy(e_i, e_s)
-        )
+        delta_u = abs(formulae.ch3.lethargy(e_i, e_i) - formulae.ch3.lethargy(e_i, e_s))
         return MultiPartAnswer(
             ans=[e_s, e_r, delta_u], units=["MeV", "MeV", ""], sig_figs=3
         ).format()
@@ -159,7 +158,7 @@ class Chapter3Examples:
         # Indium is a non-1/v absorber, therefore:
         sigma_macro_a, phi = data.cross_sections["In"]["macro_a"], 5e12
         g = data.non_1_v_factors["In"]["g_a"]["600C"]
-        f = self.formulae.absorption_rate_non_1_v_alt(g, sigma_macro_a, phi)
+        f = formulae.ch3.absorption_rate_non_1_v_alt(g, sigma_macro_a, phi)
         return SingleAnswer(ans=f, units="neutrons/cm^3", sig_figs=3).format()
 
     def example_3_12(self) -> SingleAnswer:
@@ -171,7 +170,7 @@ class Chapter3Examples:
         operating_time = 1 * conversions.time["s/yr"] / conversions.time["s/day"]
         p, removal_time = 100, 1
         # Dividing by 120 rods yields the answer:
-        alpha = self.formulae.fission_product_activity_reactor(
+        alpha = formulae.ch3.fission_product_activity_reactor(
             p, operating_time, removal_time
         )
         # Dividing by 120 rods yields the answer:
@@ -217,7 +216,7 @@ class Chapter3Examples:
         # b)
         oil_heat = 4.3e7  # J/kg
         m_2 = p / oil_heat
-        self.formulae.scattered_photon_energy(e=1, theta=1)
+        formulae.ch3.scattered_photon_energy(e=1, theta=1)
         return MultiPartAnswer(ans=[m_1, m_2], units="kg", sig_figs=3).format()
 
     def example_3_15(self) -> MultiPartAnswer:
@@ -232,12 +231,12 @@ class Chapter3Examples:
         mu_star_u = data.mass_attenuation_coefficients["U"]["1.0 MeV"]
         mu_star_o = data.mass_attenuation_coefficients["O"]["1.0 MeV"]
         # Calculating the mass attenuation coefficient of the mixture:
-        mu_star = self.formulae.mass_attenuation_coeff_mixture(
+        mu_star = formulae.ch3.mass_attenuation_coeff_mixture(
             omega=[omega_u, omega_o], mu_star=[mu_star_u, mu_star_o]
         )
         # The mean free path is:
         mu = mu_star * rho
-        lambda_ = self.formulae.gamma_ray_mean_free_path(mu)
+        lambda_ = formulae.ch3.gamma_ray_mean_free_path(mu)
         return MultiPartAnswer(
             ans=[mu_star, lambda_], units=["g/cm^2", "cm"], sig_figs=3
         ).format()
@@ -250,7 +249,7 @@ class Chapter3Examples:
         i, e = 3e11, 0.8  # gamma-rays/(cm^2-s), MeV
         # Steel is mostly iron. Therefore:
         mu_rho_a = data.mass_absorption_coefficients["Fe"]["0.8 MeV"]
-        w = self.formulae.energy_deposition_rate_att(e, i, mu_rho_a)
+        w = formulae.ch3.energy_deposition_rate_att(e, i, mu_rho_a)
         return SingleAnswer(ans=w, units="MeV/(g-s)", sig_figs=3).format()
 
     def example_3_17(self) -> SingleAnswer:
@@ -259,7 +258,7 @@ class Chapter3Examples:
         animal tissue?"""
         e_max = 1.39
         # Since the density of most animal tissue approximately 1 g/cm:
-        r = self.formulae.beta_ray_max_range(e_max, rho=1)
+        r = formulae.ch3.beta_ray_max_range(e_max, rho=1)
         return SingleAnswer(ans=r, units="cm", sig_figs=3).format()
 
 

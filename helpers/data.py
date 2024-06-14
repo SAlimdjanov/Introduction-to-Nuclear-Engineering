@@ -1772,3 +1772,11 @@ mass_absorption_coefficients = {  # cm^2/g
         "10 MeV": 0.0160,
     },
 }
+
+fission_fragment_ranges = {  # cm
+    "Al": 1.4e-3,
+    "Cu": 0.59e-3,
+    "Ag": 0.53e-3,
+    "U": 0.66e-3,
+    "U_3O_8": 1.4e-3,
+}

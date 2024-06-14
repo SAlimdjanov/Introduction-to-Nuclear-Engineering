@@ -6,15 +6,16 @@ chapter_2_problems.py
 from math import log, sqrt, pi
 from helpers import conversions, data
 from helpers.answer_types import SingleAnswer, MultiPartAnswer
-from helpers.chapter_formulae.chapter_2 import AtomicAndNuclearPhysics
+from helpers.formulae import Formulae
 from helpers.answer_writer import AnswerWriter
+
+formulae = Formulae()
 
 
 class Chapter2Problems:
     """Solutions to Chapter 2 Problems"""
 
     type_and_chapter = ("Problem", 2)
-    formulae = AtomicAndNuclearPhysics()
 
     def problem_2_1(self) -> str:
         """How many neutrons and protons are there in the nuclei of the following atoms:
@@ -43,7 +44,7 @@ class Chapter2Problems:
         m_1h, m_2h = data.atomic_masses["1H"], data.atomic_masses["2H"]
         # a) hydrogen gas
         m_h2 = (
-            self.formulae.average_atomic_weight([gamma_1h, gamma_2h], [m_1h, m_2h]) * 2
+            formulae.ch2.average_atomic_weight([gamma_1h, gamma_2h], [m_1h, m_2h]) * 2
         )
         # b) Water
         gamma_i = [
@@ -56,7 +57,7 @@ class Chapter2Problems:
             data.atomic_masses["17O"],
             data.atomic_masses["18O"],
         ]
-        m_o = self.formulae.average_atomic_weight(gamma_i, m_i)
+        m_o = formulae.ch2.average_atomic_weight(gamma_i, m_i)
         m_h_2o = m_h2 + m_o
         # c) Hydrogen peroxide
         m_h_2o_2 = m_h2 + m_o * 2
@@ -88,7 +89,7 @@ class Chapter2Problems:
             data.atomic_masses["235U"],
             data.atomic_masses["238U"],
         ]
-        m = self.formulae.average_atomic_weight(gamma_i, m_i)
+        m = formulae.ch2.average_atomic_weight(gamma_i, m_i)
         return m, "amu", 8
 
     def problem_2_7(self) -> MultiPartAnswer:
@@ -154,7 +155,7 @@ class Chapter2Problems:
         # The empirical atomic radius of uranium is 175 pm
         r = 175e-12  # m
         a = 238
-        r_238u = self.formulae.nuclear_radius(a) * conversions.unit_prefixes["f"]  # m
+        r_238u = formulae.ch2.nuclear_radius(a) * conversions.unit_prefixes["f"]  # m
         # Fraction involves dividing the volume, simplified to:
         fraction = (r_238u / r) ** 3
         return f"{fraction * 100:.4g} %"
@@ -190,7 +191,7 @@ class Chapter2Problems:
         """The complete combustion of 1 kg of bituminous coal releases about 3*10^7 J in heat
         energy. The conversion of 1 g of mass into energy is equivalent to the burning of how
         much coal?"""
-        e = self.formulae.total_energy(1 / 1000)
+        e = formulae.ch2.total_energy(1 / 1000)
         e_btu = e * conversions.energy["Btu/J"]
         # Hard coal is rated at 13000 Btu/lb and 1 kg = 2.205 lb. 1000 kg = 1 tonne
         mass_tonnes = e_btu / (13000 * 2.205 * 1000)
@@ -229,7 +230,7 @@ class Chapter2Problems:
         # a) Since initial speed is 0, the kinetic energy is equal to the work done on the electron
         e_k = delta_e * q  # J
         # b) The total energy is the rest energy + the kinetic energy.
-        e_rest = self.formulae.rest_energy(m_e)
+        e_rest = formulae.ch2.rest_energy(m_e)
         e_total = e_k + e_rest
         # c) e_total = m * c^2. The final mass calculation is simple
         m_f = e_total / c**2
@@ -250,7 +251,7 @@ class Chapter2Problems:
         """Using the equation in Problem 2.20, calculated the speed of a 1 MeV electron, one with a
         kinetic energy of 1 MeV"""
         m_e, c = data.constants["m_e (kg)"], data.constants["c (m/s)"]
-        e_rest = self.formulae.rest_energy(m_e) / conversions.energy["J/MeV"]
+        e_rest = formulae.ch2.rest_energy(m_e) / conversions.energy["J/MeV"]
         e_total = e_rest + 1
         v = c * sqrt(1 - e_rest**2 / e_total**2)
         return SingleAnswer(ans=v, units="m/s", sig_figs=3).format()
@@ -259,10 +260,10 @@ class Chapter2Problems:
         """Compute the wavelengths of a 1 MeV: (a) photon, (b) neutron"""
         # a)
         e_t_photon = 1 * conversions.energy["J/MeV"]
-        lambda_photon = self.formulae.photon_wavelength(e_t_photon)
+        lambda_photon = formulae.ch2.photon_wavelength(e_t_photon)
         # b)
         m_n = data.constants["m_n (kg)"]
-        lambda_neutron = self.formulae.wavelength_nonrel(m_n, e_t_photon)
+        lambda_neutron = formulae.ch2.wavelength_nonrel(m_n, e_t_photon)
         return MultiPartAnswer(
             ans=[lambda_photon, lambda_neutron], units="m", sig_figs=3
         ).format()
@@ -279,7 +280,7 @@ class Chapter2Problems:
             data.constants["h (J-s)"],
             data.constants["c (m/s)"],
         )
-        e_rest = self.formulae.rest_energy(m_e)
+        e_rest = formulae.ch2.rest_energy(m_e)
         e_total = 1 * conversions.energy["J/MeV"] + e_rest
         lambda_c = h / (m_e * c)
         lambda_ = (lambda_c * m_e * c**2) / sqrt(e_total**2 - e_rest**2)
@@ -298,13 +299,13 @@ class Chapter2Problems:
             data.constants["c (m/s)"],
         )
         # a)
-        e_total = self.formulae.rest_energy(m_e) * 2
+        e_total = formulae.ch2.rest_energy(m_e) * 2
         # b)
         m = e_total / c**2
         # c)
-        v = self.formulae.particle_speed(e_total, e_total / 2)
+        v = formulae.ch2.particle_speed(e_total, e_total / 2)
         # d)
-        lambda_ = self.formulae.wavelength_w_compton(e_total, e_total / 2)
+        lambda_ = formulae.ch2.wavelength_w_compton(e_total, e_total / 2)
         lambda_c = h / (m_e * c)
         # Expressing in appropriate units:
         e_total /= m_e * c**2
@@ -387,7 +388,7 @@ class Chapter2Problems:
         )
         m_3h, half_life = data.atomic_masses["3H"], data.half_lives["3H"]
         alpha = 1e-3 * d  # disintegrations/s
-        lambda_ = self.formulae.decay_constant(half_life)
+        lambda_ = formulae.ch2.decay_constant(half_life)
         num_atoms = alpha / lambda_
         mass = num_atoms * m_3h / n_a
         return f"{decay_chain}, {mass:.3g} g"
@@ -400,8 +401,8 @@ class Chapter2Problems:
         t_sr, t_co = data.half_lives["90Sr"], data.half_lives["60Co"]
         m_90sr, m_60co = data.atomic_masses["90Sr"], data.atomic_masses["60Co"]
         # Compute the decay data.constants
-        lambda_sr = self.formulae.decay_constant(t_sr)
-        lambda_co = self.formulae.decay_constant(t_co)
+        lambda_sr = formulae.ch2.decay_constant(t_sr)
+        lambda_co = formulae.ch2.decay_constant(t_co)
         # Since the activities are equal, one can find the number of strontium atoms through the
         # equation: num_atoms_sr * lambda_sr = num_atoms_co * lambda_co
         # Where the number of atoms is given by m * N_A / M
@@ -422,7 +423,7 @@ class Chapter2Problems:
         n_atoms_c = n_a * 1e-3  # atoms/mM
         activity_ccl4 *= d * 0.1  # disintegrations/s
         # Computing the decay constant and number of 14C atoms:
-        lambda_ = self.formulae.decay_constant(t_14c)
+        lambda_ = formulae.ch2.decay_constant(t_14c)
         n_atoms_14c = activity_ccl4 / lambda_
         # The fraction is therefore:
         fraction = n_atoms_14c / n_atoms_c
@@ -438,7 +439,7 @@ class Chapter2Problems:
             data.constants["N_A (1/(g-mol))"],
             conversions.activity["Bq/Ci"],
         )
-        lambda_ = self.formulae.decay_constant(data.half_lives["3H"])
+        lambda_ = formulae.ch2.decay_constant(data.half_lives["3H"])
         v = m_1h3ho / rho_1h3ho  # cm^3/mol
         alpha = 5e-3 * v * d  # disintegrations/s
         n = alpha / lambda_
@@ -455,8 +456,8 @@ class Chapter2Problems:
         t_137cs, t_134cs = data.half_lives["137Cs"], data.half_lives["134Cs"]  # s
         d = conversions.activity["Bq/Ci"]
         # Decay data.constants
-        lambda_137cs = self.formulae.decay_constant(t_137cs)
-        lambda_134cs = self.formulae.decay_constant(t_134cs)
+        lambda_137cs = formulae.ch2.decay_constant(t_137cs)
+        lambda_134cs = formulae.ch2.decay_constant(t_134cs)
         # Number of atoms
         n_137cs = alpha_137cs * 1e-6 * d / lambda_137cs
         n_134cs = alpha_134cs * 1e-6 * d / lambda_134cs
@@ -471,7 +472,7 @@ class Chapter2Problems:
         (b) What is the pressure 10 years after the capsule is sealed?"""
         n_a = data.constants["N_A (1/(g-mol))"]
         # a) The pressure rate is related to activity per unit volume:
-        lambda_ = self.formulae.decay_constant(data.half_lives["226Ra"])
+        lambda_ = formulae.ch2.decay_constant(data.half_lives["226Ra"])
         n = 1 * n_a / (226 * 1.2)  # atoms/cm^3
         alpha = lambda_ * n  # disintegrations/(cm^3-s)
         # b) The activity per unit volume increases linearly with time
@@ -497,7 +498,7 @@ class Chapter2Problems:
         # To produce 1 MW, the desired activity is:
         alpha = 1e6 / p * d
         # Since alpha = lambda * N = lambda * m * N_A / M
-        lambda_ = self.formulae.decay_constant(t)
+        lambda_ = formulae.ch2.decay_constant(t)
         m = alpha * 210 / (lambda_ * n_a)
         m /= conversions.unit_prefixes["k"]
         return SingleAnswer(ans=m, units="kg", sig_figs=4).format()
@@ -517,7 +518,7 @@ class Chapter2Problems:
         d = conversions.activity["Bq/Ci"]
         eff = 1 / e * 1 / d * 1 / conversions.energy["J/MeV"]
         # b)
-        lambda_ = self.formulae.decay_constant(t)
+        lambda_ = formulae.ch2.decay_constant(t)
         p = (
             lambda_
             * n_a
@@ -543,8 +544,8 @@ class Chapter2Problems:
         formed about 4.5 billion years ago. How long ago was the isotopic abundance of 235U equal
         to 3.0 a/o, the enrichment of the uranium used in many nuclear power plants?"""
         # Compute decay data.constants
-        lambda_238 = self.formulae.decay_constant(data.half_lives["238U"])
-        lambda_235 = self.formulae.decay_constant(data.half_lives["235U"])
+        lambda_238 = formulae.ch2.decay_constant(data.half_lives["238U"])
+        lambda_235 = formulae.ch2.decay_constant(data.half_lives["235U"])
         # Abundances
         x_235 = 0.03
         x_238 = 1 - x_235
@@ -600,10 +601,10 @@ class Chapter2Problems:
         ]
         # Since the half-life of 234U is much greater than that of half-life 222Rn, the activities
         # are approximately equal. Computing the abundance of 234U
-        gamma = self.formulae.abundance_natural(gamma_i, m_i, gamma_i[0], m_i[0])
+        gamma = formulae.ch2.abundance_natural(gamma_i, m_i, gamma_i[0], m_i[0])
         # Obtaining the activity in disintegrations/s
-        lambda_ = self.formulae.decay_constant(data.half_lives["234U"])
-        alpha = self.formulae.activity_atom_density(lambda_, m_i[0], gamma)
+        lambda_ = formulae.ch2.decay_constant(data.half_lives["234U"])
+        alpha = formulae.ch2.activity_atom_density(lambda_, m_i[0], gamma)
         alpha *= 1e6 / conversions.activity["Bq/Ci"]
         return SingleAnswer(ans=alpha, units="Ci/t", sig_figs=3).format()
 
@@ -622,7 +623,7 @@ class Chapter2Problems:
         # Computing the total half-life of short-lived daughters:
         t_total = sum([t_214po, t_218po, t_214bi, t_214pb])
         # Since alpha = lambda * N, N = alpha/lambda
-        lambda_ = self.formulae.decay_constant(t_total)
+        lambda_ = formulae.ch2.decay_constant(t_total)
         n = alpha / lambda_
         return SingleAnswer(ans=n, units="atoms/cm^3", sig_figs=3).format()
 
@@ -637,35 +638,35 @@ class Chapter2Problems:
         of 14C is 14.003242.]
         (a) 4He(p,d) (b) 9Be(alpha,n) (c) 14N(n,p) (d) 115In(d,p) (e) 207Pb(gamma,n)"""
         # a) The reaction is 4He(p,d)3He or 4He + 1H -> 3He + 2H
-        q_a = self.formulae.q_value_atomic_masses(
+        q_a = formulae.ch2.q_value_atomic_masses(
             data.atomic_masses["4He"],
             data.atomic_masses["1H"],
             data.atomic_masses["3He"],
             data.atomic_masses["2H"],
         )
         # b) The reaction is 9Be(alpha,n)12C or 9Be + 4He -> 12C + n
-        q_b = self.formulae.q_value_atomic_masses(
+        q_b = formulae.ch2.q_value_atomic_masses(
             data.atomic_masses["9Be"],
             data.atomic_masses["4He"],
             data.atomic_masses["12C"],
             data.atomic_masses["n"],
         )
         # c) The reaction is 14N(n,p)14C or 14N + n -> 14C + 1H
-        q_c = self.formulae.q_value_atomic_masses(
+        q_c = formulae.ch2.q_value_atomic_masses(
             data.atomic_masses["14N"],
             data.atomic_masses["n"],
             data.atomic_masses["14C"],
             data.atomic_masses["1H"],
         )
         # d) The reaction is 115In(d,p)116In or 115In + 2H -> 116In + 1H
-        q_d = self.formulae.q_value_atomic_masses(
+        q_d = formulae.ch2.q_value_atomic_masses(
             data.atomic_masses["115In"],
             data.atomic_masses["2H"],
             data.atomic_masses["116In"],
             data.atomic_masses["1H"],
         )
         # e) The reaction is 207Pb(gamma, n)206Pb or 207Pb + gamma -> 206Pb + n
-        q_e = self.formulae.q_value_atomic_masses(
+        q_e = formulae.ch2.q_value_atomic_masses(
             data.atomic_masses["207Pb"],
             data.atomic_masses["gamma"],
             data.atomic_masses["206Pb"],
@@ -684,7 +685,7 @@ class Chapter2Problems:
         e_alpha = 4.782  # MeV
         # a) The decay chain is 226Ra -> 222Rn + alpha (4He). The recoil energy is the difference
         # between the Q value of the reaction and emission energy
-        q = self.formulae.q_value_atomic_masses(
+        q = formulae.ch2.q_value_atomic_masses(
             data.atomic_masses["226Ra"],
             0,
             data.atomic_masses["222Ra"],
@@ -708,7 +709,7 @@ class Chapter2Problems:
         Δ(3H) = 14.95 MeV, Δ(2H) = 13.14 MeV, Δ(n) = 8.07 MeV, and Δ(4He) = 2.42 MeV. Calculate the
         Q value of this reaction using the results of Problem 2.47"""
         # The reaction is 3H + 2H -> 4He + n. Therefore:
-        q = self.formulae.q_value_mass_defects(14.95, 13.14, 8.07, 2.42)
+        q = formulae.ch2.q_value_mass_defects(14.95, 13.14, 8.07, 2.42)
         return SingleAnswer(ans=q, units="MeV", sig_figs=5).format()
 
     def problem_2_49(self) -> SingleAnswer:
@@ -746,9 +747,9 @@ class Chapter2Problems:
         recoil = e_gamma**2 / (2 * m_3h * conversions.energy["MeV/amu"])
         recoil *= 1000  # keV
         # b) Q-value
-        q = self.formulae.q_value_atomic_masses(m_2h, m_n, 0, m_3h)
+        q = formulae.ch2.q_value_atomic_masses(m_2h, m_n, 0, m_3h)
         # c) E_s = binding energy of the last neutron
-        e_s = self.formulae.separation_energy(m_2h, m_3h)
+        e_s = formulae.ch2.separation_energy(m_2h, m_3h)
         # d) The total binding energy is the separation energy of the last neutron plus the binding
         # energy of the ^{A-1}H nuclide, which is BE(2H)
         be = e_s + be_2h
@@ -764,12 +765,12 @@ class Chapter2Problems:
             data.atomic_masses["4He"],
         )
         # a) The binding energies are the separation energies of the last neutrons
-        be_6li = self.formulae.binding_energy(m_6li, 3, 3)
-        be_9be = self.formulae.binding_energy(m_9be, 4, 5)
-        be_4he = self.formulae.binding_energy(m_4he, 2, 2)
+        be_6li = formulae.ch2.binding_energy(m_6li, 3, 3)
+        be_9be = formulae.ch2.binding_energy(m_9be, 4, 5)
+        be_4he = formulae.ch2.binding_energy(m_4he, 2, 2)
         # b) The Q-value can be obtained with atomic masses. Note: Alpha particle mass is
         # approximately equal to M(4H)
-        q = self.formulae.q_value_atomic_masses(
+        q = formulae.ch2.q_value_atomic_masses(
             m_6li, data.atomic_masses["alpha"], data.atomic_masses["p"], m_9be
         )
         return ", ".join(f"{i:.5g} MeV" for i in [be_6li, be_9be, be_4he, q])
@@ -778,17 +779,15 @@ class Chapter2Problems:
         """Using atomic mass data, compute the average binding energy per nucleon of the following
         nuclei: (a) 2H (b) 4He (c) 12C (d) 51V (e) 138Ba (f) 235U"""
         # Divide the binding energies by the atomic number
-        be_2h = self.formulae.binding_energy(data.atomic_masses["2H"], z=1, n=1) / 2
-        be_4he = self.formulae.binding_energy(data.atomic_masses["4He"], z=2, n=2) / 4
-        be_12c = self.formulae.binding_energy(data.atomic_masses["12C"], z=6, n=6) / 12
-        be_51v = (
-            self.formulae.binding_energy(data.atomic_masses["51V"], z=23, n=28) / 51
-        )
+        be_2h = formulae.ch2.binding_energy(data.atomic_masses["2H"], z=1, n=1) / 2
+        be_4he = formulae.ch2.binding_energy(data.atomic_masses["4He"], z=2, n=2) / 4
+        be_12c = formulae.ch2.binding_energy(data.atomic_masses["12C"], z=6, n=6) / 12
+        be_51v = formulae.ch2.binding_energy(data.atomic_masses["51V"], z=23, n=28) / 51
         be_138ba = (
-            self.formulae.binding_energy(data.atomic_masses["138Ba"], z=56, n=82) / 138
+            formulae.ch2.binding_energy(data.atomic_masses["138Ba"], z=56, n=82) / 138
         )
         be_235u = (
-            self.formulae.binding_energy(data.atomic_masses["235U"], z=92, n=143) / 235
+            formulae.ch2.binding_energy(data.atomic_masses["235U"], z=92, n=143) / 235
         )
         return MultiPartAnswer(
             ans=[be_2h, be_4he, be_12c, be_51v, be_138ba, be_235u],
@@ -799,12 +798,12 @@ class Chapter2Problems:
     def problem_2_53(self) -> MultiPartAnswer:
         """Using the mass formula, compute the binding energy per nucleon for the nuclei in Problem
         2.52. Compare the results with those obtained in that problem"""
-        be_2h = self.formulae.binding_energy_mass_eqn(n=1, a=2, z=1) / 2
-        be_4he = self.formulae.binding_energy_mass_eqn(n=2, a=4, z=2) / 4
-        be_12c = self.formulae.binding_energy_mass_eqn(n=6, a=12, z=6) / 12
-        be_51v = self.formulae.binding_energy_mass_eqn(n=28, a=51, z=23) / 51
-        be_138ba = self.formulae.binding_energy_mass_eqn(n=82, a=138, z=56) / 138
-        be_235u = self.formulae.binding_energy_mass_eqn(n=143, a=235, z=92) / 235
+        be_2h = formulae.ch2.binding_energy_mass_eqn(n=1, a=2, z=1) / 2
+        be_4he = formulae.ch2.binding_energy_mass_eqn(n=2, a=4, z=2) / 4
+        be_12c = formulae.ch2.binding_energy_mass_eqn(n=6, a=12, z=6) / 12
+        be_51v = formulae.ch2.binding_energy_mass_eqn(n=28, a=51, z=23) / 51
+        be_138ba = formulae.ch2.binding_energy_mass_eqn(n=82, a=138, z=56) / 138
+        be_235u = formulae.ch2.binding_energy_mass_eqn(n=143, a=235, z=92) / 235
         return MultiPartAnswer(
             ans=[be_2h, be_4he, be_12c, be_51v, be_138ba, be_235u],
             units="MeV",
@@ -815,22 +814,22 @@ class Chapter2Problems:
         """Compute the separation energies of the last neutron in the following nuclei:
         (a) 4He (b) 7Li (c) 17O (d) 51V (e) 208Pb (f) 235U"""
         # Using the separation energy formula:
-        e_4he = self.formulae.separation_energy(
+        e_4he = formulae.ch2.separation_energy(
             data.atomic_masses["3He"], data.atomic_masses["4He"]
         )
-        e_7li = self.formulae.separation_energy(
+        e_7li = formulae.ch2.separation_energy(
             data.atomic_masses["6Li"], data.atomic_masses["7Li"]
         )
-        e_17o = self.formulae.separation_energy(
+        e_17o = formulae.ch2.separation_energy(
             data.atomic_masses["16O"], data.atomic_masses["17O"]
         )
-        e_51v = self.formulae.separation_energy(
+        e_51v = formulae.ch2.separation_energy(
             data.atomic_masses["50V"], data.atomic_masses["51V"]
         )
-        e_208pb = self.formulae.separation_energy(
+        e_208pb = formulae.ch2.separation_energy(
             data.atomic_masses["207Pb"], data.atomic_masses["208Pb"]
         )
-        e_235u = self.formulae.separation_energy(
+        e_235u = formulae.ch2.separation_energy(
             data.atomic_masses["234U"], data.atomic_masses["235U"]
         )
         return MultiPartAnswer(
@@ -851,7 +850,7 @@ class Chapter2Problems:
     def problem_2_57(self) -> SingleAnswer:
         """Calculate the atom density of graphite having a density of 1.60 g/cm^3"""
         # Graphite is comprised of carbon, therefore:
-        n = self.formulae.atom_density(rho=1.6, m=data.atomic_masses["C"])
+        n = formulae.ch2.atom_density(rho=1.6, m=data.atomic_masses["C"])
         return SingleAnswer(ans=n, units="atoms/cm^3", sig_figs=3).format()
 
     def problem_2_58(self) -> SingleAnswer:
@@ -867,8 +866,8 @@ class Chapter2Problems:
         ]
         n, alpha = len(t), 0
         for i in range(n):
-            lambda_ = self.formulae.decay_constant(t[i])
-            alpha += self.formulae.activity_atom_density(lambda_, m, gamma[i])
+            lambda_ = formulae.ch2.decay_constant(t[i])
+            alpha += formulae.ch2.activity_atom_density(lambda_, m, gamma[i])
         alpha /= conversions.activity["Bq/Ci"]
         return SingleAnswer(ans=alpha, units="Ci", sig_figs=4).format()
 
@@ -877,7 +876,7 @@ class Chapter2Problems:
         physical density of the uranium is 19.0 g/cm^3"""
         # The average atomic weight of naturally occuring uranium was computed in Problem 2.6:
         m, rho, w = self.problem_2_6()[0], 19.0, 2.5
-        n = self.formulae.atom_density_component(w, rho, m)
+        n = formulae.ch2.atom_density_component(w, rho, m)
         return SingleAnswer(ans=n, units="atoms/cm^3", sig_figs=3).format()
 
     def problem_2_60(self) -> MultiPartAnswer:
@@ -887,8 +886,8 @@ class Chapter2Problems:
         m_239pu = data.atomic_masses["239Pu"]
         m_total = m_239pu + 2 * data.atomic_masses["O"]
         gamma = m_239pu / m_total
-        lambda_ = self.formulae.decay_constant(data.half_lives["239Pu"])
-        alpha_bq = self.formulae.activity_atom_density(lambda_, m_239pu, gamma)
+        lambda_ = formulae.ch2.decay_constant(data.half_lives["239Pu"])
+        alpha_bq = formulae.ch2.activity_atom_density(lambda_, m_239pu, gamma)
         alpha_ci = alpha_bq / conversions.activity["Bq/Ci"]
         return MultiPartAnswer(
             ans=[alpha_ci, alpha_bq], units=["Ci", "Bq"], sig_figs=4
@@ -900,13 +899,13 @@ class Chapter2Problems:
         (a) What is the atomic weight of the uranium?
         (b) What is the atom density of the 235U?"""
         # a) Found by computing the average atomic weight
-        m_u = self.formulae.average_atomic_weight(
+        m_u = formulae.ch2.average_atomic_weight(
             gamma=[25, 75], m=[data.atomic_masses["235U"], data.atomic_masses["238U"]]
         )
         # b) Computing the weight percent of uranium, then the atom density of uranium-235 in UC
-        w = self.formulae.weight_percent(x=m_u, m=1, y=data.atomic_masses["C"], n=1)
+        w = formulae.ch2.weight_percent(x=m_u, m=1, y=data.atomic_masses["C"], n=1)
         rho_u = 13.6 * w / 100
-        n = self.formulae.atom_density_component(
+        n = formulae.ch2.atom_density_component(
             w=25, rho=rho_u, m=data.atomic_masses["235U"]
         )
         return MultiPartAnswer(
@@ -917,12 +916,12 @@ class Chapter2Problems:
         """Compute the atom densities of 235U and 238U in UO_2 of physical density 10.8 g/cm^3 if
         the uranium is enriched to 3.5 w/o in 235U"""
         m_235u, m_238u = data.atomic_masses["235U"], data.atomic_masses["238U"]
-        m_u = self.formulae.average_atomic_weight(gamma=[3.5, 96.5], m=[m_235u, m_238u])
+        m_u = formulae.ch2.average_atomic_weight(gamma=[3.5, 96.5], m=[m_235u, m_238u])
         m_uo_2 = m_u + 2 * data.atomic_masses["O"]
         w = m_u / m_uo_2
         rho_u = 10.8 * w
-        n_235u = self.formulae.atom_density_component(w=3.5, rho=rho_u, m=m_235u)
-        n_238u = self.formulae.atom_density_component(w=96.5, rho=rho_u, m=m_238u)
+        n_235u = formulae.ch2.atom_density_component(w=3.5, rho=rho_u, m=m_235u)
+        n_238u = formulae.ch2.atom_density_component(w=96.5, rho=rho_u, m=m_238u)
         return MultiPartAnswer(
             ans=[n_235u, n_238u], units="atoms/cm^3", sig_figs=4
         ).format()
@@ -941,14 +940,14 @@ class Chapter2Problems:
             data.atomic_masses["241Pu"],
             data.atomic_masses["242Pu"],
         ]
-        m_avg = self.formulae.average_atomic_weight(gamma, m)
+        m_avg = formulae.ch2.average_atomic_weight(gamma, m)
         m_pu_o_2 = m_avg + 2 * data.atomic_masses["O"]
         w = m_avg / m_pu_o_2
         rho = 0.3
         j, n = len(gamma), []
         # Iteratively calculating the atom densities for each isotope
         for i in range(j):
-            n.append(gamma[i] * self.formulae.atom_density_component(w, rho, m[i]))
+            n.append(gamma[i] * formulae.ch2.atom_density_component(w, rho, m[i]))
         return MultiPartAnswer(ans=n, units="atoms/g", sig_figs=4).format()
 
 

@@ -6,15 +6,16 @@ chapter_2_examples.py
 from math import exp, log
 from helpers.answer_types import SingleAnswer, MultiPartAnswer
 from helpers import conversions, data
-from helpers.chapter_formulae.chapter_2 import AtomicAndNuclearPhysics
+from helpers.formulae import Formulae
 from helpers.answer_writer import AnswerWriter
+
+formulae = Formulae()
 
 
 class Chapter2Examples:
     """Solutions of Chapter 2 example problems"""
 
     type_and_chapter = ("Example", 2)
-    formulae = AtomicAndNuclearPhysics()
 
     def example_2_1(self) -> SingleAnswer:
         """A glass of water is known to contain 6.6 * 10^24 atoms of hydrogen. How
@@ -32,7 +33,7 @@ class Chapter2Examples:
             data.atomic_masses["17O"],
             data.atomic_masses["18O"],
         ]
-        m_avg = self.formulae.average_atomic_weight(gamma, m)
+        m_avg = formulae.ch2.average_atomic_weight(gamma, m)
         return SingleAnswer(ans=m_avg, units=None, sig_figs=6).format()
 
     def example_2_3(self) -> SingleAnswer:
@@ -58,7 +59,7 @@ class Chapter2Examples:
         atom. What wavelength radiation is emitted when an outer electron drops into the vacancy?
         """
         ionization_energy = 88e3 * conversions.energy["J/eV"]  # J
-        lambda_ = self.formulae.photon_wavelength(ionization_energy)
+        lambda_ = formulae.ch2.photon_wavelength(ionization_energy)
         return SingleAnswer(ans=lambda_, units="m", sig_figs=3).format()
 
     def example_2_6(self) -> MultiPartAnswer:
@@ -68,7 +69,7 @@ class Chapter2Examples:
         (a) What is the theoretical maximum activity due to 198Au in the foil?
         (b) How long does it take for the activity to reach 80 percent of the maximum?
         """
-        lambda_ = self.formulae.decay_constant(half_life=64.8)  # Units: atoms/hr
+        lambda_ = formulae.ch2.decay_constant(half_life=64.8)  # Units: atoms/hr
         # a) Rearrange activity equation for R given alpha_0 = 0
         max_activity = 0.9 / (1 - exp(-lambda_ * 12))
         # b) Now that R is known, rearrange activity equation for t
@@ -89,7 +90,7 @@ class Chapter2Examples:
         is: 3H(d, n)4He. Compute the Q value of this reaction."""
         # Add 1 since the deutrons are have energy of 1 MeV
         q = (
-            self.formulae.q_value_atomic_masses(
+            formulae.ch2.q_value_atomic_masses(
                 data.atomic_masses["3H"],
                 data.atomic_masses["2H"],
                 data.atomic_masses["4He"],
@@ -103,14 +104,14 @@ class Chapter2Examples:
         """Calculate the binding energy of the last neutron in 13C."""
         # The residual nucleus is 12C, therefore:
         m_a_1, m_a = data.atomic_masses["12C"], data.atomic_masses["13C"]
-        e_s = self.formulae.separation_energy(m_a_1, m_a)
+        e_s = formulae.ch2.separation_energy(m_a_1, m_a)
         return SingleAnswer(ans=e_s, units="MeV", sig_figs=3).format()
 
     def example_2_10(self) -> MultiPartAnswer:
         """Calculate the mass and binding energy of (107,47)Ag using the mass equation"""
         a, z = 107, 47
         n = a - z
-        m_mev = self.formulae.mass_equation(n, a, z)
+        m_mev = formulae.ch2.mass_equation(n, a, z)
         m_amu = m_mev / conversions.energy["MeV/amu"]
         return MultiPartAnswer(
             ans=[m_mev, m_amu], units=["MeV", "amu"], sig_figs=7
@@ -120,16 +121,16 @@ class Chapter2Examples:
         """Calculate the most probable and average energies of air molecules in a New York City
         subway in the summer time at 38 degrees celsius"""
         t = conversions.temperature(38, input_units="C", output_units="K")
-        e_p = self.formulae.most_probable_energy(t)
+        e_p = formulae.ch2.most_probable_energy(t)
         e_p = e_p / conversions.energy["J/MeV"] * conversions.unit_prefixes["M"]
-        e_avg = self.formulae.maxwellian_average_energy(t)
+        e_avg = formulae.ch2.maxwellian_average_energy(t)
         e_avg = e_avg / conversions.energy["J/MeV"] * conversions.unit_prefixes["M"]
         return MultiPartAnswer(ans=[e_p, e_avg], units="eV", sig_figs=3).format()
 
     def example_2_12(self) -> SingleAnswer:
         """The density of sodium is 0.97 g/cm^3. Calculate its atom density"""
         rho, m = 0.97, data.atomic_masses["Na"]
-        n = self.formulae.atom_density(rho, m)
+        n = formulae.ch2.atom_density(rho, m)
         return SingleAnswer(ans=n, units="atoms/cm^3", sig_figs=3).format()
 
     def example_2_13(self) -> str:
@@ -137,7 +138,7 @@ class Chapter2Examples:
         # Since there is one Na atom and one Cl atom in a pseudo molecule, add the weights:
         m = data.atomic_masses["Na"] + data.atomic_masses["Cl"]
         rho = 2.17
-        n = self.formulae.atom_density(rho, m)
+        n = formulae.ch2.atom_density(rho, m)
         return f"{n:.3g} atoms/cm^3 for both since there is one atom of each per pseudomolecule"
 
     def example_2_14(self) -> MultiPartAnswer:
@@ -148,7 +149,7 @@ class Chapter2Examples:
         # a)
         m = 2 * data.atomic_masses["H"] + data.atomic_masses["O"]
         rho = 1
-        n_h2o = self.formulae.atom_density(rho, m)
+        n_h2o = formulae.ch2.atom_density(rho, m)
         # b) Multiply result of part a) by 2 for hydrogen, oxygen stays the same.
         n_h = n_h2o * 2
         n_o = n_h2o
@@ -172,8 +173,8 @@ class Chapter2Examples:
         wp_235u, wp_238u = 20, 80
         mass_235u = 0.2 * m_total
         # b)
-        n_235u = self.formulae.atom_density_component(wp_235u, rho, m_235u)
-        n_238u = self.formulae.atom_density_component(wp_238u, rho, m_238u)
+        n_235u = formulae.ch2.atom_density_component(wp_235u, rho, m_235u)
+        n_238u = formulae.ch2.atom_density_component(wp_238u, rho, m_238u)
         return MultiPartAnswer(
             ans=[mass_235u, n_235u, n_238u],
             units=["kg", "atoms/cm^3", "atoms/cm^3"],
@@ -187,14 +188,14 @@ class Chapter2Examples:
         rho = 10.5
         wp_235u, wp_238u = 30, 70
         m_235u, m_238u = data.atomic_masses["235U"], data.atomic_masses["238U"]
-        m_u = self.formulae.atom_density_weight_percent(
+        m_u = formulae.ch2.atom_density_weight_percent(
             [wp_235u, wp_238u], [m_235u, m_238u]
         )
         m_o = data.atomic_masses["O"]
-        wp_u = self.formulae.weight_percent(m_u, 1, m_o, 2)
+        wp_u = formulae.ch2.weight_percent(m_u, 1, m_o, 2)
         rho_avg_u = wp_u * rho / 100
         rho_235u = wp_235u * rho_avg_u / 100
-        n_235u = self.formulae.atom_density(rho_235u, m_235u)
+        n_235u = formulae.ch2.atom_density(rho_235u, m_235u)
         return SingleAnswer(ans=n_235u, units="atoms/cm^3", sig_figs=3).format()
 
 
